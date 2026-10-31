@@ -1,0 +1,1261 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Eric Oliveira · Desenvolvedor Full Stack</title>
+<meta name="description" content="Portfólio de Eric Oliveira: decisões de arquitetura, método e sistemas construídos com agentes de IA, como o Wings System, ERP/CRM multi-tenant em produção.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://efsosud-rgb.github.io/">
+<meta property="og:title" content="Eric Oliveira · Desenvolvedor Full Stack">
+<meta property="og:description" content="Arquitetura e decisões de projeto em sistemas construídos com agentes de IA.">
+<meta property="og:image" content="https://efsosud-rgb.github.io/imagens/wings-system-negociacoes.png">
+<meta property="og:locale" content="pt_BR">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://efsosud-rgb.github.io/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121417'/%3E%3Ctext x='14' y='45' font-family='Arial,sans-serif' font-size='38' font-weight='800' fill='%23ffffff'%3EE%3C/text%3E%3Ccircle cx='48' cy='42' r='5' fill='%23E95228'/%3E%3C/svg%3E">
+<style>*,*::before,*::after{box-sizing:border-box}html{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700;800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: dossiê de projetos. Cada projeto é uma ficha técnica com campos fixos
+   (problema, o que faz, meu papel, ferramentas) e um diagrama do mecanismo real.
+   As telas da seção "Telas" são reproduções em HTML com dados fictícios. */
+:root {
+  --bg: #F4F5F6;
+  --surface: #FFFFFF;
+  --surface-2: #EDEFF2;
+  --ink: #121417;
+  --muted: #565C65;
+  --line: #D8DCE1;
+  --accent: #E95228;
+  --accent-text: #B53D1A;
+  --accent-soft: #FCE9E2;
+  --on-accent: #FFFFFF;
+  --ok: #1E7F4F;
+  --ok-soft: #DDF3E6;
+  --warn: #9A6700;
+  --warn-soft: #FFF1C9;
+  --display: "Schibsted Grotesk", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --body: "Source Sans 3", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E1012; --surface: #16191C; --surface-2: #1E2226; --ink: #ECEEF0; --muted: #A1A8B1;
+    --line: #2B3137; --accent: #FF6B3D; --accent-text: #FF8C66; --accent-soft: #2C1A13; --on-accent: #16191C;
+    --ok: #5FD095; --ok-soft: #10281B; --warn: #F0C050; --warn-soft: #2E2410;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E1012; --surface: #16191C; --surface-2: #1E2226; --ink: #ECEEF0; --muted: #A1A8B1;
+  --line: #2B3137; --accent: #FF6B3D; --accent-text: #FF8C66; --accent-soft: #2C1A13; --on-accent: #16191C;
+  --ok: #5FD095; --ok-soft: #10281B; --warn: #F0C050; --warn-soft: #2E2410;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 17px/1.6 var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-inline: 20px; }
+h1, h2, h3, h4 { font-family: var(--display); line-height: 1.1; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+.label { font: 500 12px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+/* topo */
+.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 58px; }
+.mark { font: 800 18px/1 var(--display); text-decoration: none; letter-spacing: -.01em; }
+.mark span { color: var(--accent); }
+.nav { display: flex; gap: 18px; font-size: 15px; }
+.nav a { text-decoration: none; color: var(--muted); }
+.nav a:hover { color: var(--ink); }
+.nav .cta { color: var(--accent-text); font-weight: 700; }
+@media (max-width: 760px) { .nav a:not(.cta) { display: none; } }
+
+/* abertura */
+.hero { padding-block: 64px 40px; display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: 48px; align-items: end; }
+.hero h1 { font-size: clamp(44px, 7vw, 84px); font-weight: 800; letter-spacing: -.03em; }
+.hero h1 .full { display: block; font: 500 15px/1.4 var(--mono); letter-spacing: .06em; color: var(--muted); margin-bottom: 14px; text-transform: uppercase; }
+.thesis { margin-top: 18px; font: 700 clamp(22px, 2.6vw, 30px)/1.25 var(--display); letter-spacing: -.01em; max-width: 22ch; }
+.thesis em { font-style: normal; color: var(--accent-text); }
+.lede { margin-top: 18px; max-width: 60ch; color: var(--muted); font-size: 18px; }
+.role { margin-top: 20px; display: inline-flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 15px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); font-size: 14px; white-space: nowrap; }
+.chip.acc { border-color: transparent; background: var(--accent-soft); color: var(--accent-text); font-weight: 600; }
+.contact-card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 14px; }
+.contact-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-width: 0; }
+.contact-row .val { font-weight: 600; overflow-wrap: anywhere; min-width: 0; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border-radius: 12px; font: 700 15px/1 var(--body); text-decoration: none; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; white-space: nowrap; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.btn.small { padding: 6px 10px; font-size: 13px; border-radius: 9px; }
+.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.fact { padding: 18px 20px 18px 0; display: flex; flex-direction: column; gap: 4px; }
+.fact + .fact { padding-left: 20px; border-left: 1px solid var(--line); }
+.fact b { font: 800 26px/1.1 var(--display); letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+.fact span { color: var(--muted); font-size: 15px; }
+
+/* seções */
+section { padding-block: 56px; }
+.sec-head { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; max-width: 720px; }
+.sec-head h2 { font-size: clamp(30px, 4vw, 44px); font-weight: 800; letter-spacing: -.02em; }
+.sec-head p { color: var(--muted); }
+
+/* método: sequência real de 4 etapas */
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; background: var(--surface); }
+.step { padding: 22px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.step + .step { border-left: 1px solid var(--line); }
+.step .n { font: 500 12px/1 var(--mono); color: var(--accent-text); letter-spacing: .08em; }
+.step h3 { font-size: 20px; font-weight: 700; }
+.step p { color: var(--muted); font-size: 15.5px; }
+
+/* fichas de projeto */
+.feature { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 32px; padding-block: 36px; border-top: 1px solid var(--line); align-items: start; }
+.feature:first-of-type { border-top: 0; padding-top: 0; }
+.p-head { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+.p-head h3 { font-size: clamp(24px, 2.8vw, 32px); font-weight: 800; letter-spacing: -.015em; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.spec { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 10px 18px; margin: 0; }
+.spec dt { font: 500 12px/1.7 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding-top: 2px; }
+.spec dd { margin: 0; font-size: 16px; }
+.spec dd + dt, .spec dd + dt + dd { border-top: 1px dashed var(--line); padding-top: 10px; }
+
+/* diagramas em HTML (reflowam no celular) */
+.diagram { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.diagram .cap { font: 500 11.5px/1.4 var(--mono); letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+.box { border: 1px solid var(--line); background: var(--surface-2); border-radius: 12px; padding: 10px 12px; font-size: 14.5px; line-height: 1.35; min-width: 0; }
+.box b { display: block; font-family: var(--display); font-size: 15px; }
+.box small { color: var(--muted); font-size: 13px; }
+.box.acc { background: var(--accent-soft); border-color: var(--accent); }
+.box.acc b { color: var(--accent-text); }
+.down { align-self: center; width: 2px; height: 14px; background: var(--line); position: relative; }
+.down::after { content: ""; position: absolute; left: -4px; bottom: -2px; border: 5px solid transparent; border-top-color: var(--line); border-bottom: 0; }
+.row { display: grid; gap: 8px; }
+.row.c2 { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); }
+.row.c3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.infra { display: flex; flex-wrap: wrap; gap: 6px; }
+.infra span { font: 500 12.5px/1 var(--mono); padding: 7px 9px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); }
+
+.flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; counter-reset: f; }
+.flow .box { position: relative; }
+.flow .box::before { counter-increment: f; content: counter(f); font: 500 11px/1 var(--mono); color: var(--muted); display: block; margin-bottom: 6px; }
+.guards { display: flex; flex-wrap: wrap; gap: 6px; }
+@keyframes sweep { 0%, 100% { box-shadow: none; } 40% { box-shadow: 0 0 0 2px var(--accent); } }
+.flow .box { animation: sweep 1.2s ease-out both; }
+.flow .box:nth-child(2) { animation-delay: .25s; } .flow .box:nth-child(3) { animation-delay: .5s; }
+.flow .box:nth-child(4) { animation-delay: .75s; } .flow .box:nth-child(5) { animation-delay: 1s; }
+.flow .box:nth-child(6) { animation-delay: 1.25s; } .flow .box:nth-child(7) { animation-delay: 1.5s; }
+.flow .box:nth-child(8) { animation-delay: 1.75s; }
+@media (prefers-reduced-motion: reduce) { .flow .box { animation: none; } }
+
+.hub { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.hub .core { grid-column: 2; grid-row: 2; background: var(--accent); border-color: var(--accent); color: var(--on-accent); display: flex; flex-direction: column; justify-content: center; }
+.hub .core b, .hub .core small { color: var(--on-accent); }
+
+.pipe { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.track { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 14px; color: var(--muted); }
+
+/* grade de projetos menores */
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 8px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.card h3 { font-size: 21px; font-weight: 800; letter-spacing: -.01em; }
+.card p { color: var(--muted); font-size: 15.5px; }
+.card .role-line { margin-top: auto; padding-top: 10px; border-top: 1px dashed var(--line); font-size: 14.5px; color: var(--ink); }
+.card .role-line b { font: 500 11.5px/1 var(--mono); letter-spacing: .07em; text-transform: uppercase; color: var(--muted); margin-right: 6px; }
+.dims { display: flex; flex-wrap: wrap; gap: 6px; }
+.dims span { font-size: 13px; padding: 4px 8px; border-radius: 8px; background: var(--surface-2); border: 1px solid var(--line); }
+
+/* ===== Telas: reproduções em HTML com dados fictícios ===== */
+.notice { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 12px; background: var(--surface); font-size: 15px; color: var(--muted); margin-bottom: 24px; }
+.notice b { color: var(--ink); }
+.shots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.shot { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; display: flex; flex-direction: column; min-width: 0; }
+.shot.wide { grid-column: 1 / -1; }
+.shot .bar { display: flex; align-items: center; gap: 8px; padding: 9px 14px; border-bottom: 1px solid var(--line); background: var(--surface-2); font: 500 11.5px/1 var(--mono); color: var(--muted); }
+.shot .bar i { width: 9px; height: 9px; border-radius: 50%; background: var(--line); display: inline-block; }
+.shot .bar i:nth-child(1) { background: #E5484D; } .shot .bar i:nth-child(2) { background: #F5A524; } .shot .bar i:nth-child(3) { background: #30A46C; }
+.shot .bar .url { margin-left: 6px; padding: 4px 10px; border-radius: 6px; background: var(--surface); border: 1px solid var(--line); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.shot .scr { overflow-x: auto; }
+.shot figcaption { padding: 12px 16px 14px; border-top: 1px solid var(--line); font-size: 14.5px; color: var(--muted); }
+.shot figcaption b { color: var(--ink); font-weight: 700; }
+.ui { min-width: 540px; display: grid; grid-template-columns: 140px minmax(0, 1fr); font-size: 12px; line-height: 1.35; color: var(--ink); }
+.ui.nosb { grid-template-columns: 1fr; }
+.side { border-right: 1px solid var(--line); background: var(--surface-2); padding: 12px 10px; display: flex; flex-direction: column; gap: 3px; }
+.side .brand { font: 800 13px/1 var(--display); padding: 4px 8px 10px; }
+.side .brand span { color: var(--accent); }
+.side a { display: block; padding: 6px 8px; border-radius: 7px; text-decoration: none; color: var(--muted); font-size: 11.5px; }
+.side a.on { background: var(--accent-soft); color: var(--accent-text); font-weight: 700; }
+.side .grp { font: 500 9.5px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding: 10px 8px 4px; }
+.main { padding: 12px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.tb { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.tb h4 { font-size: 14px; font-weight: 800; }
+.tb .acts { display: flex; gap: 6px; }
+.ub { font: 700 11px/1 var(--body); padding: 6px 9px; border-radius: 7px; border: 1px solid var(--line); background: var(--surface); }
+.ub.p { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.kpi { border: 1px solid var(--line); border-radius: 9px; padding: 8px 10px; background: var(--surface); }
+.kpi small { display: block; color: var(--muted); font-size: 10.5px; }
+.kpi b { font: 800 17px/1.2 var(--display); font-variant-numeric: tabular-nums; }
+.kpi em { font-style: normal; font-size: 10.5px; color: var(--ok); font-weight: 700; }
+.kan { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.col { background: var(--surface-2); border: 1px solid var(--line); border-radius: 9px; padding: 7px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.col h5 { margin: 0; font: 700 11px/1.3 var(--body); display: flex; justify-content: space-between; color: var(--muted); }
+.kc { background: var(--surface); border: 1px solid var(--line); border-radius: 7px; padding: 6px 7px; display: flex; flex-direction: column; gap: 3px; }
+.kc b { font-size: 11.5px; }
+.kc span { color: var(--muted); font-size: 10.5px; }
+.kc .v { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--ink); font-size: 11px; }
+.tag { display: inline-block; font: 700 9.5px/1 var(--mono); letter-spacing: .04em; padding: 3px 6px; border-radius: 5px; background: var(--accent-soft); color: var(--accent-text); }
+.tag.g { background: var(--ok-soft); color: var(--ok); }
+.tag.y { background: var(--warn-soft); color: var(--warn); }
+.tag.n { background: var(--surface-2); color: var(--muted); }
+.tbl { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+.tbl th, .tbl td { text-align: left; padding: 6px 7px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.tbl th { font: 500 10px/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.tbl td.num { font-variant-numeric: tabular-nums; text-align: right; }
+.tbl th.num { text-align: right; }
+.bars { display: grid; grid-template-columns: 90px minmax(0, 1fr) 36px; gap: 6px 8px; align-items: center; font-size: 11px; }
+.bars .b { height: 10px; border-radius: 5px; background: var(--surface-2); overflow: hidden; }
+.bars .b i { display: block; height: 100%; background: var(--accent); border-radius: 5px; }
+.bars .n { text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+.pane { border: 1px solid var(--line); border-radius: 9px; padding: 9px; background: var(--surface); display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.pane h5 { margin: 0; font: 700 11.5px/1.3 var(--body); }
+.chatl { display: flex; flex-direction: column; gap: 4px; }
+.ci { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 7px; padding: 6px 7px; border-radius: 7px; align-items: center; }
+.ci.on { background: var(--accent-soft); }
+.ci .av { width: 26px; height: 26px; border-radius: 50%; background: var(--surface-2); border: 1px solid var(--line); display: grid; place-items: center; font: 700 9.5px/1 var(--mono); color: var(--muted); }
+.ci b { display: block; font-size: 11.5px; }
+.ci span { display: block; color: var(--muted); font-size: 10.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.thread { display: flex; flex-direction: column; gap: 6px; }
+.bub { max-width: 86%; padding: 7px 9px; border-radius: 10px; background: var(--surface-2); font-size: 11.5px; }
+.bub.me { align-self: flex-end; background: var(--accent-soft); }
+.bub small { display: block; color: var(--muted); font-size: 9.5px; margin-top: 2px; }
+.kv { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 8px; font-size: 11px; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; font-weight: 600; }
+.meter { height: 12px; border-radius: 6px; background: var(--surface-2); overflow: hidden; border: 1px solid var(--line); }
+.meter i { display: block; height: 100%; background: linear-gradient(90deg, var(--ok), var(--accent)); width: 68%; }
+.alert { display: flex; gap: 8px; align-items: flex-start; padding: 7px 9px; border-radius: 8px; font-size: 11.5px; border: 1px solid var(--line); }
+.alert.y { background: var(--warn-soft); border-color: transparent; }
+.alert.g { background: var(--ok-soft); border-color: transparent; }
+.alert b { white-space: nowrap; }
+.form { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.fld { display: flex; flex-direction: column; gap: 3px; font-size: 10.5px; color: var(--muted); }
+.fld.w { grid-column: 1 / -1; }
+.fld i { display: block; height: 26px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+.lp { display: grid; grid-template-columns: minmax(0, 1fr) 250px; gap: 14px; padding: 14px; background: #FBF6F2; color: #1C1917; min-width: 540px; }
+.lp h4 { font: 800 22px/1.05 var(--display); letter-spacing: -.02em; }
+.lp h4 em { font-style: normal; color: #E95228; }
+.lp p { font-size: 11.5px; color: #57534E; margin-top: 8px; }
+.lp .cta { display: inline-block; margin-top: 10px; padding: 7px 11px; border-radius: 999px; background: #E95228; color: #fff; font: 700 11px/1 var(--body); }
+.lp .card2 { background: #fff; border: 1px solid #E7E0DA; border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 6px; }
+.lp .card2 b { font: 800 13px/1.2 var(--display); }
+.lp .fld i { background: #fff; border-color: #E7E0DA; }
+.lp .ts { border: 1px solid #E7E0DA; border-radius: 6px; padding: 6px 8px; font-size: 10.5px; color: #57534E; display: flex; justify-content: space-between; }
+.lp .send { background: #E95228; color: #fff; text-align: center; padding: 8px; border-radius: 8px; font: 700 11px/1 var(--body); }
+.tree { font: 500 11px/1.6 var(--mono); color: var(--ink); white-space: pre; }
+.tree span { color: var(--muted); }
+.q { display: flex; flex-direction: column; gap: 6px; }
+.q .row2 { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px; align-items: center; font-size: 11.5px; }
+.q .bar2 { height: 8px; background: var(--surface-2); border-radius: 4px; overflow: hidden; }
+.q .bar2 i { display: block; height: 100%; background: var(--accent); }
+.score { display: grid; place-items: center; width: 74px; height: 74px; border-radius: 50%; border: 6px solid var(--accent); font: 800 22px/1 var(--display); }
+.audit { font: 500 10.5px/1.6 var(--mono); color: var(--muted); }
+.audit b { color: var(--ink); font-weight: 500; }
+
+/* ===== Stack e técnicas ===== */
+.stack { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.sg { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 22px; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+.sg h3 { font-size: 19px; font-weight: 800; }
+.sg p { color: var(--muted); font-size: 15px; }
+.cloud { display: flex; flex-wrap: wrap; gap: 6px; }
+.cloud span { font-size: 13.5px; padding: 5px 9px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface-2); line-height: 1.35; min-width: 0; overflow-wrap: anywhere; }
+.cloud span.hi { background: var(--accent-soft); border-color: transparent; color: var(--accent-text); font-weight: 700; }
+.cloud span.st { border-style: dashed; color: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 13.5px; color: var(--muted); margin-top: 16px; }
+.legend i { display: inline-block; width: 14px; height: 14px; border-radius: 4px; border: 1px solid var(--line); background: var(--surface-2); vertical-align: -2px; margin-right: 6px; }
+.legend i.hi { background: var(--accent-soft); border-color: transparent; }
+.legend i.st { border-style: dashed; }
+.practices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
+.pr { border-top: 2px solid var(--ink); padding-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+.pr b { font-family: var(--display); font-size: 17px; }
+.pr span { color: var(--muted); font-size: 15px; }
+
+/* ecossistema */
+.eco { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.eco-group { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 22px; min-width: 0; }
+.eco-group h3 { font-size: 19px; font-weight: 800; margin-bottom: 12px; }
+.tools { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.tools li { display: grid; grid-template-columns: minmax(0, 150px) minmax(0, 1fr); gap: 12px; font-size: 15px; padding-bottom: 8px; border-bottom: 1px dashed var(--line); }
+.tools li:last-child { border-bottom: 0; padding-bottom: 0; }
+.tools li b { font-weight: 700; }
+.tools li span { color: var(--muted); }
+
+/* trajetória: ordem cronológica real */
+.timeline { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--line); display: flex; flex-direction: column; gap: 22px; }
+.timeline li { position: relative; padding-left: 24px; display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 6px 20px; }
+.timeline li::before { content: ""; position: absolute; left: -7px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--line); }
+.timeline li.now::before { background: var(--accent); border-color: var(--accent); }
+.timeline .when { font: 500 13px/1.6 var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.timeline h3 { font-size: 19px; font-weight: 700; }
+.timeline .org { color: var(--muted); font-size: 15px; }
+.timeline p { font-size: 15.5px; margin-top: 4px; }
+
+.edu { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 28px; }
+.edu div { border-top: 2px solid var(--ink); padding-top: 12px; display: flex; flex-direction: column; gap: 4px; }
+.edu b { font-family: var(--display); font-size: 17px; }
+.edu span { color: var(--muted); font-size: 15px; }
+
+/* contato */
+.contact { background: var(--ink); color: var(--bg); border-radius: 26px; padding: 40px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: center; }
+.contact h2 { font-size: clamp(30px, 4vw, 46px); font-weight: 800; letter-spacing: -.02em; }
+.contact p { color: color-mix(in srgb, var(--bg) 78%, transparent); margin-top: 12px; }
+.contact .contact-card { background: color-mix(in srgb, var(--bg) 6%, var(--ink)); border-color: color-mix(in srgb, var(--bg) 18%, transparent); color: var(--bg); }
+.contact .label { color: color-mix(in srgb, var(--bg) 65%, transparent); }
+.contact .btn { background: transparent; color: var(--bg); border-color: color-mix(in srgb, var(--bg) 30%, transparent); }
+.contact .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+footer { padding-block: 28px 44px; color: var(--muted); font-size: 14px; display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+
+@media (max-width: 960px) {
+  .hero { grid-template-columns: 1fr; align-items: start; gap: 28px; }
+  .feature { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .step:nth-child(3) { border-left: 0; }
+  .step:nth-child(n+3) { border-top: 1px solid var(--line); }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .shots { grid-template-columns: 1fr; }
+  .practices { grid-template-columns: 1fr; }
+  .contact { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+  .wrap { padding-inline: 16px; }
+  .hero { padding-block: 36px 28px; }
+  section { padding-block: 40px; }
+  .facts { grid-template-columns: 1fr; }
+  .fact, .fact + .fact { padding: 14px 0; border-left: 0; }
+  .fact + .fact { border-top: 1px solid var(--line); }
+  .steps { grid-template-columns: 1fr; }
+  .step + .step { border-left: 0; border-top: 1px solid var(--line); }
+  .spec { grid-template-columns: 1fr; gap: 4px; }
+  .spec dd + dt { margin-top: 8px; }
+  .spec dd + dt + dd { border-top: 0; padding-top: 0; }
+  .row.c2, .row.c3, .flow, .pipe, .grid, .eco, .edu, .stack { grid-template-columns: 1fr; }
+  .hub { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hub .core { grid-column: 1 / -1; grid-row: 1; }
+  .tools li { grid-template-columns: 1fr; gap: 2px; }
+  .timeline li { grid-template-columns: 1fr; gap: 2px; }
+  .contact { padding: 26px 20px; border-radius: 20px; }
+  .contact-row { flex-wrap: wrap; }
+  .btn { white-space: normal; text-align: center; }
+}
+</style>
+<style>
+/* Decisões de arquitetura, método em portas e fases da trajetória (versão GitHub Pages, 31/10/2026) */
+:root { --dev-bg: #e3f2ef; --dev-fg: #0e5d57; --trans-bg: #fbf0e2; --trans-fg: #9a5210; --com-bg: #eef1f4; --com-fg: #55606c; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --dev-bg: #10302c; --dev-fg: #7fd6c9; --trans-bg: #33230f; --trans-fg: #f2b26b; --com-bg: #23282e; --com-fg: #b4bdc7; }
+}
+:root[data-theme="dark"] { --dev-bg: #10302c; --dev-fg: #7fd6c9; --trans-bg: #33230f; --trans-fg: #f2b26b; --com-bg: #23282e; --com-fg: #b4bdc7; }
+.adrs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.adr { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.adr h3 { font-size: 21px; font-weight: 800; letter-spacing: -.01em; }
+.adr .spec { grid-template-columns: 100px minmax(0, 1fr); }
+.adr .spec dd { font-size: 15.5px; }
+.fluxo { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.fluxo li { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 20px 22px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.fluxo .n { font: 500 12px/1 var(--mono); color: var(--accent-text); letter-spacing: .08em; }
+.fluxo h3 { font-size: 19px; font-weight: 700; }
+.fluxo p { color: var(--muted); font-size: 15.5px; }
+.shot img.real { display: block; width: 100%; height: auto; }
+.timeline .fase { display: inline-block; font: 500 11px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; padding: 5px 8px; border-radius: 6px; margin-bottom: 8px; }
+.fase-dev { background: var(--dev-bg); color: var(--dev-fg); }
+.fase-trans { background: var(--trans-bg); color: var(--trans-fg); }
+.fase-com { background: var(--com-bg); color: var(--com-fg); }
+.edu { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 960px) {
+  .adrs { grid-template-columns: 1fr; }
+  .fluxo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .edu { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .fluxo, .edu { grid-template-columns: 1fr; }
+  .adr .spec { grid-template-columns: 1fr; gap: 4px; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="#inicio" aria-label="Início">Eric Oliveira<span>.</span></a>
+    <nav class="nav" aria-label="Seções">
+      <a href="#decisoes">Decisões</a>
+      <a href="#metodo">Método</a>
+      <a href="#projetos">Projetos</a>
+      <a href="#telas">Telas</a>
+      <a href="#stack">Stack</a>
+      <a href="#trajetoria">Trajetória</a>
+      <a class="cta" href="#contato">Contato</a>
+    </nav>
+  </div>
+</header>
+
+<main id="inicio">
+  <div class="wrap">
+    <div class="hero">
+      <div>
+        <h1><span class="full">Eric Fabiano da Silva Oliveira · Rio de Janeiro</span>Eric Oliveira</h1>
+        <p class="thesis">Desenvolvedor full stack. <em>Arquitetura e decisão</em> vêm antes da linguagem.</p>
+        <p class="lede">Com a IA, a linguagem de programação deixou de ser a barreira. O que faz um sistema dar certo é decidir bem: o que construir, em que ordem, com quais travas e como provar que funciona. Sou o desenvolvedor full stack sênior da Wings Company e respondo pelo Wings System, um ERP/CRM multi-tenant em produção. Eu defino a arquitetura e as regras; agentes de IA escrevem e revisam o código dentro de um método com revisão independente, segunda opinião e publicação em etapas.</p>
+        <div class="role">
+          <span class="chip acc">Desenvolvedor Full Stack Sênior</span>
+          <span class="chip">Engenharia de Software e de IA</span>
+          <span class="chip">CLT ou PJ</span>
+        </div>
+      </div>
+      <aside class="contact-card" aria-label="Contato rápido">
+        <span class="label">Contato</span>
+        <div class="contact-row">
+          <span class="val" id="mail-a">efsosud@hotmail.com</span>
+          <button class="btn small" type="button" data-copy="efsosud@hotmail.com" data-target="mail-a">Copiar</button>
+        </div>
+        <a class="btn primary" href="https://www.linkedin.com/in/eric-oliveira-0602b396/" target="_blank" rel="noopener">Perfil no LinkedIn</a>
+        <a class="btn" href="https://github.com/efsosud-rgb" target="_blank" rel="noopener">GitHub</a>
+      </aside>
+    </div>
+
+    <div class="facts" role="list">
+      <div class="fact" role="listitem"><b>10 decisões</b><span>de arquitetura registradas abaixo, cada uma com a alternativa descartada</span></div>
+      <div class="fact" role="listitem"><b>2 famílias de IA</b><span>revisam cada mudança de risco antes de ela ir ao ar</span></div>
+      <div class="fact" role="listitem"><b>17+ anos</b><span>de liderança comercial antes da tecnologia</span></div>
+    </div>
+  </div>
+
+  <section id="decisoes">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">Decisões de arquitetura</span>
+        <h2>O que decidimos e por quê</h2>
+        <p>Cada decisão traz o contexto, a escolha, a alternativa que ficou de fora e o preço que aceitamos pagar. São decisões reais do Wings System, tomadas por mim com o Claude, da Anthropic, como parceiro de arquitetura.</p>
+      </div>
+      <div class="adrs">
+        <article class="adr">
+          <span class="label">Decisão 01 · Plataforma</span>
+          <h3>Multi-tenant desde o primeiro dia</h3>
+          <dl class="spec">
+            <dt>Contexto</dt><dd>O sistema nasceu para a Wings, mas a ideia sempre foi oferecê-lo às franqueadoras clientes.</dd>
+            <dt>Decisão</dt><dd>Um banco PostgreSQL com o cliente (tenant) em cada tabela, permissões em sete níveis e uma trilha de auditoria que só cresce.</dd>
+            <dt>Descartado</dt><dd>Um banco ou uma instalação por cliente: isolamento maior, mas custo e operação multiplicados.</dd>
+            <dt>Preço</dt><dd>Toda consulta precisa filtrar o cliente, e isso vira teste. Em troca, um cliente novo entra sem servidor novo.</dd>
+          </dl>
+        </article>
+        <article class="adr">
+          <span class="label">Decisão 02 · Canais</span>
+          <h3>WhatsApp e Instagram só pela API oficial da Meta</h3>
+          <dl class="spec">
+            <dt>Contexto</dt><dd>APIs não oficiais ligam em minutos, mas arriscam o número e ferem os termos da Meta.</dd>
+            <dt>Decisão</dt><dd>WhatsApp Cloud API e Instagram Graph API. Nada de raspagem nem de automação de conta pessoal.</dd>
+            <dt>Descartado</dt><dd>Manter a Evolution API e a Z-API, que usei nos primeiros protótipos.</dd>
+            <dt>Preço</dt><dd>Modelos de mensagem aprovados, janela de 24 horas e análise do app pela Meta. Demora mais para ligar e não cai depois.</dd>
+          </dl>
+        </article>
+        <article class="adr">
+          <span class="label">Decisão 03 · Dinheiro</span>
+          <h3>Verba e anúncios só mudam com aprovação humana</h3>
+          <dl class="spec">
+            <dt>Contexto</dt><dd>O agente de tráfego lê as contas da Meta e do Google e pode sugerir mudança de verba.</dd>
+            <dt>Decisão</dt><dd>O agente só propõe, com simulação. Vale o menor de dois tetos, há botão de parada e aviso por WhatsApp, e a mudança só acontece com aprovação registrada num livro-razão que não se apaga.</dd>
+            <dt>Descartado</dt><dd>Automação de verba com limites.</dd>
+            <dt>Preço</dt><dd>Decisões mais lentas. Nenhum centavo muda sem uma pessoa.</dd>
+          </dl>
+        </article>
+        <article class="adr">
+          <span class="label">Decisão 04 · IA no atendimento</span>
+          <h3>A Sofia só diz o que foi aprovado</h3>
+          <dl class="spec">
+            <dt>Contexto</dt><dd>Uma atendente de IA no WhatsApp pode inventar preço, prazo ou promessa, e quem escreve pode tentar dar ordens a ela.</dd>
+            <dt>Decisão</dt><dd>O modelo classifica a conversa e extrai as respostas. O texto que chega ao lead sai do roteiro ou de seis frases aprovadas, e texto de terceiros nunca vira instrução.</dd>
+            <dt>Descartado</dt><dd>Resposta livre do modelo com filtro de palavras.</dd>
+            <dt>Preço</dt><dd>A conversa fica menos solta. Nenhum compromisso é inventado.</dd>
+          </dl>
+        </article>
+        <article class="adr">
+          <span class="label">Decisão 05 · Consentimento</span>
+          <h3>"Não me contate" bloqueia tudo</h3>
+          <dl class="spec">
+            <dt>Contexto</dt><dd>LGPD e a confiança de quem pediu para não receber mais mensagens.</dd>
+            <dt>Decisão</dt><dd>Depois de SAIR ou de "não me contate", nada sai por nenhum canal, nem da equipe, até uma pessoa autorizada liberar o contato, com registro.</dd>
+            <dt>Descartado</dt><dd>Bloquear só a IA e deixar a equipe responder.</dd>
+            <dt>Preço</dt><dd>Alguns contatos se perdem. Nenhuma mensagem indesejada sai.</dd>
+          </dl>
+        </article>
+        <article class="adr">
+          <span class="label">Decisão 06 · Qualidade</span>
+          <h3>Duas famílias de IA revisam o que tem risco</h3>
+          <dl class="spec">
+            <dt>Contexto</dt><dd>Um modelo tende a aprovar o próprio raciocínio.</dd>
+            <dt>Decisão</dt><dd>Toda mudança passa por revisão independente, com o código quebrado de propósito para ver se os testes pegam. As que mexem com dinheiro, mensagens, IA, permissões, dados pessoais ou banco passam também pela segunda opinião de outra família de IA, no mesmo commit e com teto de custo mensal.</dd>
+            <dt>Descartado</dt><dd>Revisão feita pelo mesmo modelo que escreveu o código.</dd>
+            <dt>Preço</dt><dd>Mais tempo por mudança. As ressalvas das revisões viram tarefas na fila.</dd>
+          </dl>
+        </article>
+        <article class="adr">
+          <span class="label">Decisão 07 · Publicação</span>
+          <h3>Staging primeiro, produção em etapas</h3>
+          <dl class="spec">
+            <dt>Contexto</dt><dd>Muitas mudanças acumuladas entre o desenvolvimento e a produção.</dd>
+            <dt>Decisão</dt><dd>Integração automática só no staging. A produção sobe em cinco etapas, com cópia do banco antes, janela marcada e uma palavra de confirmação dita por mim.</dd>
+            <dt>Descartado</dt><dd>Publicar tudo de uma vez.</dd>
+            <dt>Preço</dt><dd>A produção anda mais devagar, e cada etapa pode ser desfeita.</dd>
+          </dl>
+        </article>
+        <article class="adr">
+          <span class="label">Decisão 08 · Infraestrutura</span>
+          <h3>Servidor próprio em vez de plataformas fechadas</h3>
+          <dl class="spec">
+            <dt>Contexto</dt><dd>Dependência de plataformas de terceiros e de uma equipe externa de software.</dd>
+            <dt>Decisão</dt><dd>VPS com Docker e Coolify, PostgreSQL próprio, arquivos no Cloudflare R2 e cópias diárias.</dd>
+            <dt>Descartado</dt><dd>SaaS e PaaS gerenciados.</dd>
+            <dt>Preço</dt><dd>Manutenção e segurança passam a ser nossas, com auditoria toda semana. Em troca, custo fixo menor e controle total.</dd>
+          </dl>
+        </article>
+        <article class="adr">
+          <span class="label">Decisão 09 · Dados</span>
+          <h3>Número real ou "—"</h3>
+          <dl class="spec">
+            <dt>Contexto</dt><dd>Painel com estimativa parece bom e engana quem decide.</dd>
+            <dt>Decisão</dt><dd>Modelagem dimensional, com fatos e dimensões, e só números vindos da fonte. Sem dado, o painel mostra "—" e o motivo.</dd>
+            <dt>Descartado</dt><dd>Preencher as lacunas com médias e projeções.</dd>
+            <dt>Preço</dt><dd>Às vezes o painel fica vazio. Nunca mostra um número inventado.</dd>
+          </dl>
+        </article>
+        <article class="adr">
+          <span class="label">Decisão 10 · Privacidade</span>
+          <h3>Dado pessoal mínimo</h3>
+          <dl class="spec">
+            <dt>Contexto</dt><dd>O CRM guarda dados de pessoas, e cada dado guardado é um risco.</dd>
+            <dt>Decisão</dt><dd>CPF criptografado com revelação auditada, dados do Instagram guardados só como números e apagados em 30 dias, nada pessoal em logs.</dd>
+            <dt>Descartado</dt><dd>Guardar tudo "para o caso de precisar".</dd>
+            <dt>Preço</dt><dd>Algumas análises ficam impossíveis. O estrago de um vazamento fica muito menor.</dd>
+          </dl>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="metodo">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">Método</span>
+        <h2>Como uma ideia vira código no ar</h2>
+        <p>Eu decido o que entra e com quais regras. O Claude orquestra os agentes que escrevem e revisam. Nada chega à produção sem passar pelas seis portas.</p>
+      </div>
+      <ol class="fluxo">
+        <li><span class="n">PORTA 1</span><h3>Especificação</h3><p>O que e por quê, critérios de aceite e as decisões de negócio registradas antes de qualquer linha de código.</p></li>
+        <li><span class="n">PORTA 2</span><h3>Implementação</h3><p>Um agente trabalha numa cópia isolada, com banco descartável e o portão de qualidade: lint, tipos, testes e testes de ponta a ponta.</p></li>
+        <li><span class="n">PORTA 3</span><h3>Revisão independente</h3><p>Outro agente revisa o PR, quebra o código de propósito para ver se os testes pegam e confere o caderno de lições.</p></li>
+        <li><span class="n">PORTA 4</span><h3>Segunda opinião</h3><p>Nas mudanças de risco, uma IA de outra família revisa o mesmo commit. Se reprovar, a mudança volta para correção.</p></li>
+        <li><span class="n">PORTA 5</span><h3>Staging</h3><p>Só integra com CI verde e as duas aprovações, depois de uma cópia do banco. Eu testo com dado real.</p></li>
+        <li><span class="n">PORTA 6</span><h3>Produção</h3><p>Em etapas, com janela marcada, cópia antes e confirmação minha. Auditoria de segurança toda semana e revisão de arquitetura a cada quinze dias.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="projetos">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">Projetos</span>
+        <h2>O que construo</h2>
+        <p>Sistemas construídos com agentes de IA sob minha arquitetura, especificação e validação. Os diagramas foram feitos para este portfólio e mostram como cada sistema funciona.</p>
+      </div>
+
+      <article class="feature">
+        <div>
+          <div class="p-head">
+            <span class="label">Wings Company · 2026</span>
+            <h3>Wings System, o ERP/CRM próprio</h3>
+            <div class="tags"><span class="chip">Sistemas</span><span class="chip">IA</span></div>
+          </div>
+          <dl class="spec">
+            <dt>Problema</dt><dd>A operação dependia de plataformas de terceiros e de uma equipe externa de software.</dd>
+            <dt>O que faz</dt><dd>Plataforma de gestão multi-tenant, desenhada para virar SaaS para franqueadoras: usuários e permissões por perfil, CPF criptografado, trilha de auditoria imutável, CRM de vendas com SDR de IA no WhatsApp, agente de tráfego, estúdio de mídia e Drive. A base está no ar desde 19/09/2026.</dd>
+            <dt>Meu papel</dt><dd>Requisitos, arquitetura, módulos e níveis de acesso; direção da construção com Claude Code; validação com dados reais.</dd>
+            <dt>Resultado</dt><dd>Substitui a plataforma e a equipe externa de software que a empresa usava.</dd>
+          </dl>
+        </div>
+        <figure class="diagram" style="margin:0" aria-label="Arquitetura do Wings System">
+          <span class="cap">Arquitetura em camadas</span>
+          <div class="box acc"><b>Franqueadora (tenant)</b><small>cada cliente com sua área isolada</small></div>
+          <div class="down" aria-hidden="true"></div>
+          <div class="row c2">
+            <div class="box"><b>Contas e usuários</b><small>RBAC com sete níveis de acesso, login seguro, convite por e-mail</small></div>
+            <div class="box"><b>Auditoria</b><small>registro imutável (append-only)</small></div>
+          </div>
+          <div class="down" aria-hidden="true"></div>
+          <div class="row c3">
+            <div class="box"><b>CRM de vendas + Sofia</b></div>
+            <div class="box"><b>Agente de tráfego</b></div>
+            <div class="box"><b>Studio e Drive</b></div>
+            <div class="box"><b>Landing pages</b></div>
+            <div class="box"><b>Formatação</b></div>
+            <div class="box"><b>Portal ClickFranquia</b></div>
+          </div>
+          <div class="down" aria-hidden="true"></div>
+          <div class="infra"><span>VPS Linux</span><span>Docker</span><span>Coolify</span><span>PostgreSQL</span><span>Cloudflare R2</span><span>GitHub CI</span><span>backups diários</span></div>
+        </figure>
+      </article>
+
+      <article class="feature">
+        <div>
+          <div class="p-head">
+            <span class="label">Wings System · 2026</span>
+            <h3>Agente de Tráfego Pago</h3>
+            <div class="tags"><span class="chip">IA</span><span class="chip">Marketing</span></div>
+          </div>
+          <dl class="spec">
+            <dt>Problema</dt><dd>Sem agência, a verba de mídia precisa de acompanhamento diário e de garantia de que nada gasta além do limite.</dd>
+            <dt>O que faz</dt><dd>Lê as contas do Meta Ads e do Google Ads, calcula a exposição de orçamento contra o limite real da plataforma e emite alertas de fadiga de criativo, ritmo de gasto e anúncio reprovado. Mudança de verba só com aprovação humana, com aviso por WhatsApp e simulação antes de executar.</dd>
+            <dt>Meu papel</dt><dd>Regras de negócio e limites, especificação e validação contra as contas reais.</dd>
+            <dt>Qualidade</dt><dd>Mais de 450 testes automatizados e conciliação com a API das plataformas.</dd>
+          </dl>
+        </div>
+        <figure class="diagram" style="margin:0" aria-label="Fluxo do agente de tráfego">
+          <span class="cap">Fluxo de uma mudança de verba</span>
+          <div class="flow">
+            <div class="box"><b>Lê as contas</b><small>Meta e Google</small></div>
+            <div class="box"><b>Calcula</b><small>exposição × limite</small></div>
+            <div class="box"><b>Alerta</b><small>criativo, ritmo, reprovação</small></div>
+            <div class="box"><b>Propõe</b><small>com simulação</small></div>
+            <div class="box acc"><b>Aprovação humana</b><small>aviso por WhatsApp</small></div>
+            <div class="box"><b>Executa</b><small>checa divergência</small></div>
+            <div class="box"><b>Registra</b><small>livro-razão</small></div>
+            <div class="box"><b>Concilia</b><small>com a API</small></div>
+          </div>
+          <span class="cap">Travas</span>
+          <div class="guards">
+            <span class="chip">Teto duplo: vale o menor</span><span class="chip">Kill switch</span><span class="chip">Dead-man switch</span><span class="chip">Livro-razão append-only</span>
+          </div>
+        </figure>
+      </article>
+
+      <article class="feature">
+        <div>
+          <div class="p-head">
+            <span class="label">Wings Company · 2026</span>
+            <h3>WingsBot, o ecossistema de agentes</h3>
+            <div class="tags"><span class="chip">IA</span><span class="chip">Automação</span></div>
+          </div>
+          <dl class="spec">
+            <dt>O que faz</dt><dd>Central de agentes em servidor próprio. O OpenClaw orquestra os agentes, que usam modelos acessados pelo OpenRouter; n8n e Zapier automatizam os fluxos; a Z-API conecta o WhatsApp; o Claude Code constrói e mantém o código.</dd>
+            <dt>Agentes</dt><dd>Tráfego pago, imagem e vídeo (Kairogen), voz e avatar (ElevenLabs), pesquisa (Manus) e atendimento comercial no WhatsApp.</dd>
+            <dt>Meu papel</dt><dd>Arquitetura do ecossistema, escolha das ferramentas e regras de aprovação humana.</dd>
+          </dl>
+        </div>
+        <figure class="diagram" style="margin:0" aria-label="Mapa do WingsBot">
+          <span class="cap">Quem faz o quê</span>
+          <div class="hub">
+            <div class="box"><b>n8n</b><small>fluxos automáticos</small></div>
+            <div class="box"><b>Zapier</b><small>integra aplicativos</small></div>
+            <div class="box"><b>Z-API</b><small>WhatsApp</small></div>
+            <div class="box"><b>Kairogen</b><small>imagem e vídeo</small></div>
+            <div class="box core"><b>OpenClaw + OpenRouter</b><small>orquestra agentes e modelos</small></div>
+            <div class="box"><b>ElevenLabs</b><small>voz e avatar</small></div>
+            <div class="box"><b>Manus</b><small>pesquisa na web</small></div>
+            <div class="box"><b>Claude Code</b><small>constrói o código</small></div>
+            <div class="box"><b>Wings System</b><small>dados e CRM</small></div>
+          </div>
+        </figure>
+      </article>
+
+      <article class="feature">
+        <div>
+          <div class="p-head">
+            <span class="label">Wings Company · 2026</span>
+            <h3>Tráfego pago e captação de leads</h3>
+            <div class="tags"><span class="chip">Marketing</span><span class="chip">Comercial</span></div>
+          </div>
+          <dl class="spec">
+            <dt>Problema</dt><dd>Gerar leads qualificados para a formatação de franquias e saber de onde vem cada um.</dd>
+            <dt>O que faço</dt><dd>Crio e publico campanhas de geração de leads no Meta Ads e no Google Ads, defino a verba, acompanho os resultados e otimizo. Formulários instantâneos do Meta conectados ao CRM, landing page própria com antirrobô e código de rastreio por lead, estrutura de formulários do TikTok Ads e rastreamento no Google Tag Manager e no GA4.</dd>
+            <dt>Meu papel</dt><dd>Gestão direta das campanhas e da verba; especificação do rastreamento e da origem de cada lead.</dd>
+          </dl>
+        </div>
+        <figure class="diagram" style="margin:0" aria-label="Caminho do lead">
+          <span class="cap">Caminho do lead</span>
+          <div class="pipe">
+            <div class="box"><b>Anúncio</b><small>Meta, Google, TikTok</small></div>
+            <div class="box"><b>Formulário</b><small>instantâneo ou landing</small></div>
+            <div class="box"><b>Sofia (SDR IA)</b><small>pré-qualifica no WhatsApp</small></div>
+            <div class="box acc"><b>CRM</b><small>origem e dono do lead</small></div>
+            <div class="box"><b>Time comercial</b><small>atendimento</small></div>
+          </div>
+          <span class="cap">Rastreamento</span>
+          <div class="track"><span class="chip">GTM</span>→<span class="chip">GA4: lead imediato</span><span class="chip">início de formulário</span><span class="chip">abandono</span><span class="chip">conversões Meta e Google preservadas</span></div>
+        </figure>
+      </article>
+
+      <div class="grid">
+        <article class="card">
+          <span class="label">Wings Company · 2026</span>
+          <h3>Novo site e Quiz de Franqueabilidade</h3>
+          <p>Site com movimento: zoom lento na foto, título animado, mapa do Brasil em 3D, carrossel de casos e só duas chamadas para ação, o quiz e o WhatsApp. O quiz avalia o negócio em 14 perguntas, dá uma nota de 0 a 100 com pontos fortes e ajustes e envia o lead direto ao CRM.</p>
+          <div class="dims" aria-label="Dimensões do quiz"><span>Negócio provado</span><span>Financeiro</span><span>Capacidade de replicar</span><span>Marca e mercado</span><span>Estrutura</span></div>
+          <p class="role-line"><b>Meu papel</b>direção criativa, regras do quiz e aprovação de cada versão</p>
+        </article>
+        <article class="card">
+          <span class="label">Wings System · 2026</span>
+          <h3>Wings Studio e Drive</h3>
+          <p>Geração e edição de imagem e vídeo por IA (Kairogen), com limites de uso por usuário. Drive com pastas por departamento e por cliente em Cloudflare R2, legendas automáticas (Whisper), renderização (FFmpeg) e editor de vídeo com a marca Wings.</p>
+          <p class="role-line"><b>Meu papel</b>requisitos, estrutura de pastas e ordem das entregas</p>
+        </article>
+        <article class="card">
+          <span class="label">ClickFranquia · 2026</span>
+          <h3>Portal para franqueadores</h3>
+          <p>Portal web em que cada franqueadora tem sua área isolada sobre a base multi-tenant do Wings System, com usuários e permissões por perfil, documentos e acompanhamento da formatação da rede. Site e landing pages em WordPress/Elementor, com Google Tag Manager, pixel do Meta e integração com o CRM.</p>
+          <p class="role-line"><b>Meu papel</b>arquitetura, escopo e validação</p>
+        </article>
+        <article class="card">
+          <span class="label">ClickFranquia · 2026</span>
+          <h3>App Mobile ClickFranquia</h3>
+          <p>App para iPhone e Android, criado com IA, que leva a experiência do ClickFranquia ao celular.</p>
+          <p class="role-line"><b>Meu papel</b>escopo, direção da construção com IA e validação</p>
+        </article>
+        <article class="card">
+          <span class="label">Wings Company · 2026</span>
+          <h3>Conteúdo com IA para onboarding</h3>
+          <p>Vídeo animado de 1min30 sobre a história do franchising para o onboarding de clientes, com clipes gerados por IA e avatar digital com voz sintética da apresentadora (ElevenLabs e Creative Claw), criados com a autorização dela.</p>
+          <p class="role-line"><b>Meu papel</b>roteiro, direção e escolha das ferramentas</p>
+        </article>
+        <article class="card">
+          <span class="label">MedBox · 2025–2026</span>
+          <h3>Precificação e licitações</h3>
+          <p>Mapas de preços e painéis de lances para editais de OSS de saúde em São Paulo e Niterói; busca de equivalentes na base da empresa, em que o preço vem sempre da base e nunca da IA; ERP comercial em Google Sheets/Apps Script com deploy automatizado e testes, que reduz o tempo de carga de cerca de 25 s para 11 s.</p>
+          <p class="role-line"><b>Meu papel</b>regras de negócio, especificação e validação</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="telas">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">Telas</span>
+        <h2>Por dentro dos sistemas</h2>
+        <p>A primeira tela é real, com os dados de clientes borrados. As demais são reproduções fiéis das telas em uso, refeitas em HTML para este portfólio com nomes, valores e conversas fictícios.</p>
+      </div>
+      <div class="notice"><span aria-hidden="true">●</span><span><b>Dados protegidos.</b> Nenhum dado real de cliente aparece aqui: na tela real ele está borrado, e nas reproduções foi inventado.</span></div>
+
+      <div class="shots">
+        <figure class="shot wide" style="margin:0">
+          <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span class="url">wings-system / crm-vendas / negociações · tela real</span></div>
+          <img class="real" src="imagens/wings-system-negociacoes.png" alt="Tela real do funil de negociações do Wings System, com os dados de clientes borrados" width="1916" height="944" loading="lazy">
+          <figcaption><b>Tela real.</b> O funil de negociações do Wings System em uso, com os dados de clientes borrados.</figcaption>
+        </figure>
+
+        <figure class="shot wide" style="margin:0">
+          <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span class="url">wings-system / crm-vendas / negociações</span></div>
+          <div class="scr">
+            <div class="ui">
+              <nav class="side" aria-hidden="true">
+                <div class="brand">Wings<span>.</span> System</div>
+                <span class="grp">CRM Vendas</span>
+                <a class="on">Negociações</a><a>Sofia · SDR IA</a><a>Caixa de WhatsApp</a><a>Painel de Vendas</a><a>Leads das Campanhas</a>
+                <span class="grp">Marketing</span>
+                <a>Agente de Tráfego</a><a>Studio de Edição</a><a>Landing pages</a>
+                <span class="grp">Gestão</span>
+                <a>Projetos</a><a>Agenda</a><a>Drive</a>
+              </nav>
+              <div class="main">
+                <div class="tb"><h4>Funil Formatação · Ana R.</h4><div class="acts"><span class="ub">Filtro: Instagram confere</span><span class="ub">Mês atual</span><span class="ub p">+ Nova negociação</span></div></div>
+                <div class="kpis">
+                  <div class="kpi"><small>Leads no mês</small><b>128</b> <em>+18%</em></div>
+                  <div class="kpi"><small>Qualificados pela Sofia</small><b>61</b> <em>48%</em></div>
+                  <div class="kpi"><small>1º contato em até 1 h</small><b>92%</b></div>
+                  <div class="kpi"><small>Reuniões marcadas</small><b>23</b></div>
+                </div>
+                <div class="kan">
+                  <div class="col"><h5>Novo contato <span>4</span></h5>
+                    <div class="kc"><b>Padaria Girassol</b><span>Niterói · 2 unidades</span><span class="v">R$ 18.000</span><span class="tag">FALE COM A WINGS</span></div>
+                    <div class="kc"><b>Pet Mania</b><span>Rio · 1 unidade</span><span class="v">R$ 15.500</span><span class="tag n">META · FORMULÁRIO</span></div>
+                    <div class="kc"><b>Café do Largo</b><span>Petrópolis</span><span class="v">R$ 12.000</span><span class="tag n">GOOGLE</span></div>
+                  </div>
+                  <div class="col"><h5>Tentando contato <span>3</span></h5>
+                    <div class="kc"><b>Lavanderia Azul</b><span>2ª tentativa · hoje 14:00</span><span class="v">R$ 14.200</span><span class="tag y">INSTAGRAM SUSPEITO</span></div>
+                    <div class="kc"><b>Ótica Horizonte</b><span>retorno pedido por áudio</span><span class="v">R$ 16.800</span></div>
+                  </div>
+                  <div class="col"><h5>Reunião agendada <span>2</span></h5>
+                    <div class="kc"><b>Escola Criar</b><span>ter 10h · Meet</span><span class="v">R$ 22.000</span><span class="tag g">INSTAGRAM CONFERE</span></div>
+                    <div class="kc"><b>Burger da Praça</b><span>qui 15h · presencial</span><span class="v">R$ 19.500</span></div>
+                  </div>
+                  <div class="col"><h5>Proposta enviada <span>1</span></h5>
+                    <div class="kc"><b>Clínica Bem Viver</b><span>proposta v2 · aguardando</span><span class="v">R$ 42.000</span><span class="tag g">70% PROBABILIDADE</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <figcaption><b>CRM Vendas.</b> Funil por setor (Formatação e Expansão), cada vendedor vê só os próprios leads, origem e código de rastreio em cada card, e o resultado da conferência de Instagram feita pela IA.</figcaption>
+        </figure>
+
+        <figure class="shot" style="margin:0">
+          <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span class="url">wings-system / crm-vendas / sofia</span></div>
+          <div class="scr">
+            <div class="ui nosb">
+              <div class="main">
+                <div class="tb"><h4>Sofia · SDR IA no WhatsApp</h4><span class="tag g">● ONLINE</span></div>
+                <div class="two">
+                  <div class="pane">
+                    <div class="chatl">
+                      <div class="ci on"><span class="av">MA</span><div><b>Mariana · Padaria Girassol</b><span>Quero abrir a terceira como franquia</span></div></div>
+                      <div class="ci"><span class="av">CA</span><div><b>Carlos · Burger da Praça</b><span>Pode ser quinta à tarde?</span></div></div>
+                      <div class="ci"><span class="av">JU</span><div><b>Juliana · Escola Criar</b><span>Mandei o site, dá uma olhada</span></div></div>
+                      <div class="ci"><span class="av">RO</span><div><b>Rodrigo · fornecedor</b><span>encaminhado para pessoa</span></div></div>
+                    </div>
+                  </div>
+                  <div class="pane">
+                    <div class="thread">
+                      <div class="bub me">Oi, Mariana! Sou a Sofia, atendente virtual da Wings. Vi que você veio pela página Fale com a Wings. Hoje a padaria tem quantas unidades?<small>Sofia · 09:41</small></div>
+                      <div class="bub">Duas, em Niterói. Quero abrir a terceira como franquia.<small>Mariana · 09:42</small></div>
+                      <div class="bub me">Perfeito. Isso é Formatação de franquia. Vou te conectar com a consultora Ana. Pode ser amanhã às 10h?<small>Sofia · 09:42</small></div>
+                      <div class="bub">Pode sim!<small>Mariana · 09:43</small></div>
+                    </div>
+                    <dl class="kv">
+                      <dt>Setor</dt><dd>Formatação</dd>
+                      <dt>Origem</dt><dd>Fale com a Wings · ref J9K8WF</dd>
+                      <dt>Instagram</dt><dd>confere ✓ · 3,2 mil seguidores</dd>
+                      <dt>Dono</dt><dd>Ana R. (rodízio)</dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <figcaption><b>Sofia, a SDR de IA.</b> Recebe toda mensagem do WhatsApp comercial, pré-qualifica, identifica o setor e entrega ao vendedor da vez. Não atende sozinha: transfere.</figcaption>
+        </figure>
+
+        <figure class="shot" style="margin:0">
+          <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span class="url">wings-system / crm-vendas / painel-de-vendas</span></div>
+          <div class="scr">
+            <div class="ui nosb">
+              <div class="main">
+                <div class="tb"><h4>Painel de Vendas · outubro</h4><div class="acts"><span class="ub">Setor: todos</span><span class="ub">Exportar</span></div></div>
+                <div class="kpis">
+                  <div class="kpi"><small>Custo por lead</small><b>R$ 14,20</b> <em>−9%</em></div>
+                  <div class="kpi"><small>Lead → reunião</small><b>18%</b></div>
+                  <div class="kpi"><small>Suspeitos</small><b>7</b></div>
+                  <div class="kpi"><small>Falsos</small><b>2</b></div>
+                </div>
+                <div class="pane">
+                  <h5>Leads por origem</h5>
+                  <div class="bars">
+                    <span>Meta Ads</span><div class="b"><i style="width:100%"></i></div><span class="n">54</span>
+                    <span>Google Ads</span><div class="b"><i style="width:57%"></i></div><span class="n">31</span>
+                    <span>Landing page</span><div class="b"><i style="width:50%"></i></div><span class="n">27</span>
+                    <span>Instagram</span><div class="b"><i style="width:30%"></i></div><span class="n">16</span>
+                  </div>
+                </div>
+                <table class="tbl">
+                  <thead><tr><th>Instagram por página</th><th class="num">Leads</th><th class="num">Conferem</th><th class="num">Suspeitos</th><th class="num">Falsos</th></tr></thead>
+                  <tbody>
+                    <tr><td>Fale com a Wings</td><td class="num">27</td><td class="num">23</td><td class="num">3</td><td class="num">1</td></tr>
+                    <tr><td>LP Expansão · marca A</td><td class="num">19</td><td class="num">15</td><td class="num">3</td><td class="num">1</td></tr>
+                    <tr><td>LP Expansão · marca B</td><td class="num">11</td><td class="num">10</td><td class="num">1</td><td class="num">—</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <figcaption><b>Painel de Vendas.</b> Fatos e dimensões em modelagem dimensional: origem, campanha, página, vendedor e etapa. Só números vindos da base; sem dado, aparece "—".</figcaption>
+        </figure>
+
+        <figure class="shot wide" style="margin:0">
+          <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span class="url">fale.wingscompany.com.br</span></div>
+          <div class="scr">
+            <div class="lp">
+              <div>
+                <span class="tag">FALE COM A WINGS</span>
+                <h4 style="margin-top:10px">Toda expansão começa com uma <em>boa leitura</em> do negócio.</h4>
+                <p>A primeira conversa com a Wings é uma leitura honesta sobre a sua operação, seus desafios de crescimento e o caminho mais coerente para avançar com método.</p>
+                <p style="margin-top:12px"><b style="color:#E95228">O que você pode esperar da primeira conversa:</b><br>leitura honesta do momento atual · identificação dos gargalos · caminhos de expansão · o que precisa estar pronto antes do próximo passo</p>
+                <span class="cta">Falar no WhatsApp</span>
+              </div>
+              <div class="card2">
+                <b>Quero conversar com a Wings</b>
+                <div class="form">
+                  <div class="fld w">Nome completo<i></i></div>
+                  <div class="fld">WhatsApp<i></i></div>
+                  <div class="fld">E-mail<i></i></div>
+                  <div class="fld w">Nome da empresa<i></i></div>
+                  <div class="fld">Instagram da marca<i></i></div>
+                  <div class="fld">Site (opcional)<i></i></div>
+                  <div class="fld w">O que você procura?<i></i></div>
+                </div>
+                <div class="ts"><span>☐ Confirme que é humano</span><span>Cloudflare</span></div>
+                <div class="send">Enviar e falar com a Wings</div>
+              </div>
+            </div>
+          </div>
+          <figcaption><b>Landing page "Fale com a Wings".</b> App estático próprio (Vite + nginx) com antirrobô Cloudflare Turnstile, GTM, formulário obrigatório com Instagram e site, e botão de WhatsApp que já leva o código do lead para a Sofia. Os leads caem direto no CRM.</figcaption>
+        </figure>
+
+        <figure class="shot" style="margin:0">
+          <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span class="url">wings-system / marketing / agente-de-trafego</span></div>
+          <div class="scr">
+            <div class="ui nosb">
+              <div class="main">
+                <div class="tb"><h4>Agente de Tráfego · hoje</h4><span class="tag n">ESCRITA DESLIGADA</span></div>
+                <div class="pane">
+                  <h5>Exposição de verba: 68% do teto (R$ 1.900 de R$ 2.800)</h5>
+                  <div class="meter"><i></i></div>
+                </div>
+                <table class="tbl">
+                  <thead><tr><th>Campanha</th><th>Plataforma</th><th class="num">Verba/dia</th><th class="num">Gasto hoje</th><th class="num">CPL</th><th>Status</th></tr></thead>
+                  <tbody>
+                    <tr><td>Formatação · Leads</td><td>Meta</td><td class="num">R$ 120</td><td class="num">R$ 83</td><td class="num">R$ 14,20</td><td><span class="tag g">ATIVA</span></td></tr>
+                    <tr><td>Expansão · Pizza Nostra</td><td>Meta</td><td class="num">R$ 60</td><td class="num">R$ 58</td><td class="num">R$ 9,80</td><td><span class="tag g">ATIVA</span></td></tr>
+                    <tr><td>Pesquisa · franquear</td><td>Google</td><td class="num">R$ 80</td><td class="num">R$ 41</td><td class="num">R$ 22,10</td><td><span class="tag y">APRENDENDO</span></td></tr>
+                  </tbody>
+                </table>
+                <div class="alert y"><b>Fadiga de criativo</b><span>"Leitura do negócio v2": CTR caiu 38% em 7 dias. Sugestão: trocar pelo criativo v3.</span></div>
+                <div class="alert g"><b>Pedido de verba</b><span>R$ 120 → R$ 150/dia em "Formatação · Leads". Simulação: +22% leads, teto respeitado. Aguardando aprovação do Diretor.</span></div>
+              </div>
+            </div>
+          </div>
+          <figcaption><b>Agente de Tráfego Pago.</b> Lê as contas pela API, calcula a exposição contra o teto, alerta e propõe. Nenhuma verba muda sem aprovação humana, com simulação antes e livro-razão depois.</figcaption>
+        </figure>
+
+        <figure class="shot" style="margin:0">
+          <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span class="url">wings-system / administração / usuários</span></div>
+          <div class="scr">
+            <div class="ui nosb">
+              <div class="main">
+                <div class="tb"><h4>Usuários e níveis de acesso</h4><span class="ub p">+ Convidar</span></div>
+                <table class="tbl">
+                  <thead><tr><th>Nome</th><th>Nível</th><th>Setor</th><th>Status</th></tr></thead>
+                  <tbody>
+                    <tr><td>Ana Ribeiro</td><td>Vendedora</td><td>Formatação</td><td><span class="tag g">ATIVA</span></td></tr>
+                    <tr><td>Bruno Santos</td><td>Vendedor</td><td>Expansão</td><td><span class="tag g">ATIVO</span></td></tr>
+                    <tr><td>Carla Mendes</td><td>Diretoria</td><td>—</td><td><span class="tag g">ATIVA</span></td></tr>
+                    <tr><td>Diego Lima</td><td>Marketing</td><td>Marketing</td><td><span class="tag y">CONVITE ENVIADO</span></td></tr>
+                    <tr><td>Fernanda Costa</td><td>Consultora</td><td>Formatação · Jurídico</td><td><span class="tag g">ATIVA</span></td></tr>
+                  </tbody>
+                </table>
+                <div class="pane">
+                  <h5>Níveis (RBAC)</h5>
+                  <div class="cloud"><span class="hi">Admin Master</span><span>Diretoria</span><span>Gerente Comercial</span><span>Vendedor</span><span>Marketing</span><span>Formatação · 6 subníveis</span><span>RH/DP</span></div>
+                </div>
+                <div class="audit"><b>14:02</b> carla.m alterou nível de diego.l → Marketing<br><b>13:40</b> convite enviado a diego.l<br><b>11:15</b> ana.r revelou CPF de cliente (motivo: contrato)</div>
+              </div>
+            </div>
+          </div>
+          <figcaption><b>Cadastro de usuários.</b> Sete níveis de acesso, CPF criptografado com revelação auditada, convite por e-mail, lockout e trilha de auditoria que não pode ser apagada.</figcaption>
+        </figure>
+
+        <figure class="shot" style="margin:0">
+          <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span class="url">wings-system / marketing / studio-de-edição</span></div>
+          <div class="scr">
+            <div class="ui nosb">
+              <div class="main">
+                <div class="tb"><h4>Studio de Edição e Drive</h4><span class="tag n">R2 · 3 PASTAS NOVAS HOJE</span></div>
+                <div class="two">
+                  <div class="pane">
+                    <h5>Drive por cliente</h5>
+<pre class="tree" style="margin:0">Formatação/
+├─ Padaria Girassol/
+│  ├─ Marketing/  <span>14 arquivos</span>
+│  ├─ Jurídico/   <span>3 arquivos</span>
+│  └─ Financeiro/ <span>vazio</span>
+├─ Clínica Bem Viver/
+└─ Escola Criar/
+Comercial/
+└─ Propostas/</pre>
+                  </div>
+                  <div class="pane">
+                    <h5>Fila de renderização</h5>
+                    <div class="q">
+                      <div class="row2"><span>Legendas automáticas · reel_01.mp4 · Whisper</span><span class="tag g">CONCLUÍDO</span></div>
+                      <div class="row2"><span>Corte 9:16 · podcast_ep3 · FFmpeg</span><span>62%</span></div>
+                      <div class="bar2"><i style="width:62%"></i></div>
+                      <div class="row2"><span>Imagem · campanha outono · Kairogen</span><span class="tag n">NA FILA</span></div>
+                      <div class="row2"><span>Narração · vídeo onboarding · ElevenLabs</span><span class="tag n">NA FILA</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <figcaption><b>Studio e Drive.</b> Catálogo de provedores de mídia (a IA escolhe qual usar e troca quando os créditos acabam), fila de jobs no worker, Drive em Cloudflare R2 com pasta criada a cada cliente novo.</figcaption>
+        </figure>
+
+        <figure class="shot" style="margin:0">
+          <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span class="url">wingscompany.com.br / quiz-de-franqueabilidade</span></div>
+          <div class="scr">
+            <div class="ui nosb">
+              <div class="main">
+                <div class="tb"><h4>Quiz de Franqueabilidade · resultado</h4><span class="tag">14 PERGUNTAS</span></div>
+                <div class="two">
+                  <div class="pane" style="align-items:center;text-align:center">
+                    <div class="score">72</div>
+                    <h5>Pronto para estruturar</h5>
+                    <span style="font-size:11px;color:var(--muted)">Padaria Girassol · 2 unidades · Niterói</span>
+                  </div>
+                  <div class="pane">
+                    <div class="q">
+                      <div class="row2"><span>Negócio provado</span><span>18/20</span></div><div class="bar2"><i style="width:90%"></i></div>
+                      <div class="row2"><span>Financeiro</span><span>14/20</span></div><div class="bar2"><i style="width:70%"></i></div>
+                      <div class="row2"><span>Capacidade de replicar</span><span>12/20</span></div><div class="bar2"><i style="width:60%"></i></div>
+                      <div class="row2"><span>Marca e mercado</span><span>16/20</span></div><div class="bar2"><i style="width:80%"></i></div>
+                      <div class="row2"><span>Estrutura</span><span>12/20</span></div><div class="bar2"><i style="width:60%"></i></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="alert g"><b>Próximo passo</b><span>Lead enviado ao CRM com a nota e os ajustes sugeridos; a Sofia chama no WhatsApp.</span></div>
+              </div>
+            </div>
+          </div>
+          <figcaption><b>Quiz de Franqueabilidade.</b> Nota de 0 a 100 em cinco dimensões, com pontos fortes e ajustes; o resultado vira lead no CRM.</figcaption>
+        </figure>
+
+        <figure class="shot wide" style="margin:0">
+          <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span class="url">medbox / painel-de-lances / edital 0412</span></div>
+          <div class="scr">
+            <div class="ui nosb">
+              <div class="main">
+                <div class="tb"><h4>Painel de Lances · Edital 0412 (OSS)</h4><div class="acts"><span class="ub">Base de preços</span><span class="ub">Exportar</span></div></div>
+                <table class="tbl">
+                  <thead><tr><th>Item</th><th>Descrição</th><th class="num">Ref. edital</th><th class="num">Nosso custo</th><th class="num">Lance</th><th class="num">Margem</th></tr></thead>
+                  <tbody>
+                    <tr><td>12</td><td>Analgésico 500 mg · cx 500</td><td class="num">R$ 38,90</td><td class="num">R$ 26,40</td><td class="num">R$ 31,20</td><td class="num">15%</td></tr>
+                    <tr><td>13</td><td>Soro fisiológico 500 ml · cx 24</td><td class="num">R$ 92,00</td><td class="num">R$ 71,10</td><td class="num">R$ 84,90</td><td class="num">16%</td></tr>
+                    <tr><td>14</td><td>Luva nitrílica M · cx 100</td><td class="num">R$ 29,50</td><td class="num">R$ 24,80</td><td class="num">R$ 28,10</td><td class="num">12%</td></tr>
+                    <tr><td>15</td><td>Gaze estéril 7,5 cm · pct 10</td><td class="num">R$ 4,20</td><td class="num">R$ 3,90</td><td class="num">—</td><td class="num"><span class="tag y">SEM MARGEM</span></td></tr>
+                  </tbody>
+                </table>
+                <div class="alert g"><b>Regra</b><span>Custo e equivalente vêm sempre da base da empresa; a IA só sugere o equivalente e nunca inventa preço.</span></div>
+              </div>
+            </div>
+          </div>
+          <figcaption><b>MedBox · Painel de Lances.</b> Cruza o edital com a base de preços e o relatório da plataforma de cotações, item a item, com margem e alerta de item sem viabilidade.</figcaption>
+        </figure>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="stack">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">Stack e técnicas</span>
+        <h2>O que usamos para construir</h2>
+        <p>Linguagens, modelos, técnicas de IA, integrações e práticas de engenharia usadas nos projetos acima. Em destaque, o que está em produção hoje; tracejado, o que está em avaliação ou estudo.</p>
+      </div>
+      <div class="stack">
+        <div class="sg">
+          <h3>Linguagens e base técnica</h3>
+          <p>O Wings System é um monorepo TypeScript com API, web, worker e landing pages, publicado por Docker no Coolify.</p>
+          <div class="cloud">
+            <span class="hi">TypeScript / Node.js</span><span class="hi">React</span><span class="hi">Vite</span><span class="hi">PostgreSQL 17</span><span class="hi">SQL</span><span class="hi">HTML / CSS</span><span class="hi">Python</span><span class="hi">Bash / PowerShell</span><span class="hi">Google Apps Script</span><span>JavaScript (p5.js, Three.js, GSAP)</span><span>Java</span><span>pnpm monorepo</span><span>migrações e seeds idempotentes</span><span>testes unitários e e2e (Playwright)</span><span>CI no GitHub Actions</span><span>Docker</span><span>Coolify</span><span>nginx / Traefik</span><span>Let's Encrypt</span><span>Cloudflare R2 + Turnstile</span><span>DNS Hostinger / HostGator</span><span>WordPress / Elementor</span><span>React Native / Expo</span>
+          </div>
+        </div>
+        <div class="sg">
+          <h3>IA aplicada</h3>
+          <p>Agentes com ferramentas, vários modelos escolhidos por custo e tarefa, e IA só onde ela decide melhor que uma regra.</p>
+          <div class="cloud">
+            <span class="hi">Claude (Opus, Sonnet, Fable) via Claude Code</span><span class="hi">OpenRouter (DeepSeek, GPT, Gemini, Kimi)</span><span class="hi">Agentes com ferramentas (tool use)</span><span class="hi">Multiagentes: 3 sessões orquestradas</span><span class="hi">SDR de IA no WhatsApp (Sofia)</span><span class="hi">Triagem e roteamento de leads (TypeSafe AI)</span><span class="hi">Enriquecimento de lead com busca na web</span><span class="hi">Verificação de Instagram por IA</span><span class="hi">ASR local: Whisper + VAD (sherpa-onnx)</span><span class="hi">Diarização de falantes</span><span class="hi">TTS e clonagem de voz com consentimento (ElevenLabs, Cartesia)</span><span class="hi">Geração de imagem e vídeo (Kairogen, Nano Banana, Flux, Seedance, Veo)</span><span class="hi">Avatar digital (HeyGen, Creative Claw)</span><span class="hi">Leitura de vídeo quadro a quadro + OCR</span><span class="hi">RAG clássico, com grafo e agêntico</span><span>Embeddings e busca semântica</span><span>Fine-tuning</span><span>Prompt engineering e avaliação de saída</span><span class="st">Voz em tempo real (Sofia por voz)</span><span class="st">Modelos locais (VoiceStudio, Ollama)</span>
+          </div>
+        </div>
+        <div class="sg">
+          <h3>MLOps e governança de IA</h3>
+          <p>Para IA em produção com dinheiro e dado de cliente envolvidos, as travas valem mais do que o modelo.</p>
+          <div class="cloud">
+            <span class="hi">Roteamento de modelos por custo e qualidade</span><span class="hi">Teto diário de gasto por job (ledger de custo)</span><span class="hi">Aprovação humana (human-in-the-loop)</span><span class="hi">Kill switch e dead-man switch</span><span class="hi">Simulação antes de executar (dry-run)</span><span class="hi">Livro-razão append-only</span><span class="hi">Trilha de auditoria imutável</span><span class="hi">Dados pessoais apagados antes de ir à IA (LGPD)</span><span class="hi">Segredos fora do código (Coolify / arquivos 600)</span><span class="hi">Ambientes staging e produção</span><span class="hi">Deploy com confirmação e rollback</span><span class="hi">450+ testes no agente de tráfego</span><span class="hi">Conciliação com a API das plataformas</span><span class="hi">Backups diários locais + R2, restore testado</span><span class="hi">Logs e monitoramento</span><span class="hi">Varredura de segurança (Claude Security)</span><span>Avaliação por testes de regressão</span><span>Controle de tokens e contexto</span>
+          </div>
+        </div>
+        <div class="sg">
+          <h3>MCPs, APIs e integrações</h3>
+          <p>Os agentes falam com as plataformas por API oficial e por MCP; nada de raspagem de rede social.</p>
+          <div class="cloud">
+            <span class="hi">Meta Marketing API e Graph API</span><span class="hi">Google Ads API</span><span class="hi">WhatsApp: Z-API (hoje) → Cloud API oficial (em migração)</span><span class="hi">Google Calendar, Drive e Meet</span><span class="hi">Google Tag Manager e GA4</span><span class="hi">Cloudflare (R2, Turnstile)</span><span class="hi">SMTP Google Workspace</span><span class="hi">Instagram Business Discovery</span><span class="hi">Brave Search</span><span class="hi">OpenRouter</span><span class="hi">MCP: Supermetrics</span><span class="hi">MCP: HyperFrames (HeyGen)</span><span class="hi">MCP: Zapier</span><span class="hi">MCP: Google Workspace</span><span class="hi">MCP: Creative Claw</span><span class="hi">Playwright MCP</span><span class="hi">Firecrawl</span><span class="hi">Kairogen via MCP/OAuth</span><span>TikTok Marketing API</span><span>LinkedIn Ads</span><span>YouTube Data API</span><span>RD Station</span><span>Documenso</span><span>n8n</span><span>Zapier</span><span class="st">Conector MCP do Wings System (leitura)</span><span class="st">WhatsApp Calling API</span>
+          </div>
+        </div>
+        <div class="sg">
+          <h3>Skills e plugins do Claude Code</h3>
+          <p>Skills próprias escritas para o nosso jeito de trabalhar, mais plugins do marketplace oficial e da comunidade, instalados por agente e só quando compensam em tokens.</p>
+          <div class="cloud">
+            <span class="hi">Skills próprias: analisar-video</span><span class="hi">avaliar-ferramenta-terceiro</span><span class="hi">modelagem-dimensional</span><span class="hi">modelagem-3d-animacao-js</span><span class="hi">engenharia-reversa-de-sistemas</span><span class="hi">Claude Security</span><span class="hi">Claude Code Setup</span><span class="hi">frontend-design e document-skills (Anthropic)</span><span class="hi">humanizer</span><span class="hi">claude-seo</span><span class="hi">ui-ux-pro-max</span><span class="hi">remotion</span><span class="hi">ffmpeg-skill</span><span class="hi">HyperFrames</span><span class="hi">Marketing Skills e Social Media Skills</span><span class="hi">Taste, Design DNA, Genjutsu</span><span class="hi">GSAP e LottieFiles motion-design</span><span class="hi">Task Observer</span><span class="hi">handoff e grill-me</span><span class="st">Ponytail e Karpathy skills</span><span class="st">Superpowers</span><span class="st">ECC (Everything Claude Code)</span><span class="st">REA (Reverse Engineer Anything)</span><span class="st">Agency Agents</span><span class="st">Harvey</span><span class="st">angr</span>
+          </div>
+        </div>
+        <div class="sg">
+          <h3>Dados, design e método</h3>
+          <p>Modelagem para análise, telas que a equipe entende e um jeito de trabalhar com os agentes que cabe no orçamento.</p>
+          <div class="cloud">
+            <span class="hi">Modelagem dimensional (Kimball): fatos e dimensões</span><span class="hi">Painéis só com dado real ("—" quando não há)</span><span class="hi">Multi-tenant com tenant_id desde o início</span><span class="hi">RBAC com 7 níveis e subníveis</span><span class="hi">Argon2id, CSRF, lockout, CPF criptografado</span><span class="hi">Webhooks (Meta, Z-API, TikTok)</span><span class="hi">Worker de jobs (transcrição, render, enriquecimento)</span><span class="hi">Modelagem 5D: 3D, parallax, animação por rolagem, cursor e giroscópio</span><span class="hi">Landing pages estáticas por host e slug</span><span class="hi">Brandbook e identidade aplicados ao sistema</span><span class="hi">Handoffs entre sessões, worktrees e /compact</span><span class="hi">Uma sessão escreve por vez; testes no modelo mais barato</span><span class="hi">Engenharia reversa clean-room (capturar → mapear → reconstruir → acelerar)</span><span>SEO técnico e copy</span><span>Modelos de mensagem do WhatsApp por marca</span>
+          </div>
+        </div>
+      </div>
+      <div class="legend" aria-label="Legenda"><span><i class="hi"></i>em uso nos projetos</span><span><i></i>usado ou dominado</span><span><i class="st"></i>em avaliação ou estudo</span></div>
+      <div class="practices">
+        <div class="pr"><b>Regra de ouro dos dados</b><span>Nenhum número inventado: painéis e relatórios mostram só o que vem da fonte. Sem dado, aparece "—" e o motivo.</span></div>
+        <div class="pr"><b>Regra de ouro do dinheiro</b><span>Anúncio, verba, cartão e envio real só com ordem explícita de uma pessoa, naquele momento. O sistema propõe; a pessoa decide.</span></div>
+        <div class="pr"><b>Regra de ouro do código</b><span>Nada entra em produção sem teste contra dado real, sem passar pelo staging e sem que eu veja funcionando na tela.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ferramentas">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">Ferramentas</span>
+        <h2>Ecossistema de IA</h2>
+        <p>As ferramentas que uso e indico, e o papel de cada uma.</p>
+      </div>
+      <div class="eco">
+        <div class="eco-group">
+          <h3>Agentes e modelos</h3>
+          <ul class="tools">
+            <li><b>Claude Code</b><span>constrói, testa e mantém o código; três sessões (Opus, Sonnet e Fable) orquestradas por tarefa</span></li>
+            <li><b>OpenClaw</b><span>orquestra os agentes do WingsBot</span></li>
+            <li><b>OpenRouter</b><span>acesso a vários modelos por uma só API, escolhidos por custo e qualidade</span></li>
+            <li><b>Manus</b><span>agente autônomo de pesquisa e tarefas na web</span></li>
+            <li><b>TypeSafe AI (Jev)</b><span>triagem e roteamento de leads, sem receber dados pessoais</span></li>
+            <li><b>ChatGPT, Gemini, Codex CLI</b><span>análise, revisão e apoio ao código</span></li>
+            <li><b>NotebookLM</b><span>pesquisa e base de conhecimento</span></li>
+            <li><b>MCP</b><span>conecta os agentes às ferramentas da empresa</span></li>
+          </ul>
+        </div>
+        <div class="eco-group">
+          <h3>Automação e infraestrutura</h3>
+          <ul class="tools">
+            <li><b>n8n</b><span>fluxos automáticos no servidor próprio</span></li>
+            <li><b>Zapier</b><span>integra aplicativos sem código</span></li>
+            <li><b>Z-API → WhatsApp Cloud API</b><span>envia e recebe mensagens no WhatsApp; migração para a API oficial da Meta</span></li>
+            <li><b>Documenso</b><span>assinatura eletrônica de contratos</span></li>
+            <li><b>VPS, Docker, Coolify</b><span>servidor próprio, publicação e gestão dos serviços</span></li>
+            <li><b>PostgreSQL, Supabase</b><span>bancos de dados</span></li>
+            <li><b>GitHub, Cloudflare R2</b><span>código e versões; armazenamento de arquivos e mídia</span></li>
+          </ul>
+        </div>
+        <div class="eco-group">
+          <h3>Mídia e design</h3>
+          <ul class="tools">
+            <li><b>Kairogen</b><span>gera imagem e vídeo por IA</span></li>
+            <li><b>ElevenLabs, Cartesia</b><span>voz sintética e clonagem de voz com autorização</span></li>
+            <li><b>Creative Claw, HeyGen</b><span>avatar digital, vídeo e motion graphics (HyperFrames)</span></li>
+            <li><b>Pomelli</b><span>DNA de marca e peças de campanha</span></li>
+            <li><b>Shotstack, FFmpeg, Whisper, Remotion</b><span>edição, renderização, legendas automáticas e vídeo por código</span></li>
+            <li><b>Figma, Canva, Photoshop, Illustrator, CapCut, ComfyUI</b><span>design e edição</span></li>
+            <li><b>Penpot, FigCraft, OpenCut</b><span>alternativas abertas em avaliação para o Studio do Wings System</span></li>
+          </ul>
+        </div>
+        <div class="eco-group">
+          <h3>Marketing, sites e dados</h3>
+          <ul class="tools">
+            <li><b>Meta, Google, TikTok e LinkedIn Ads</b><span>mídia paga e formulários instantâneos</span></li>
+            <li><b>RD Station</b><span>automação de marketing e CRM, em migração para o Wings System</span></li>
+            <li><b>Google Tag Manager, GA4</b><span>rastreamento de conversões e analytics</span></li>
+            <li><b>Supermetrics</b><span>dados de mídia por MCP</span></li>
+            <li><b>WordPress, Lovable</b><span>sites, landing pages e sistemas web com IA</span></li>
+            <li><b>React Native, Expo</b><span>apps para iPhone e Android com um só código</span></li>
+            <li><b>Power BI, Google Sheets</b><span>KPIs e dashboards executivos</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="trajetoria">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">Trajetória</span>
+        <h2>Do comercial ao desenvolvimento</h2>
+        <p>A transição começou em 2025: da direção da Apaixonados por Quatro Patas fui para a MedBox, onde comecei a desenvolver sistemas agênticos. Hoje sou o desenvolvedor full stack sênior da Wings.</p>
+      </div>
+      <ol class="timeline">
+        <li class="now"><span class="when">2026 – atual</span><div><span class="fase fase-dev">Fase 3 · Desenvolvimento</span><h3>Desenvolvedor Full Stack Sênior e Arquiteto de IA</h3><span class="org">Wings Company (franquias) · também Diretor Comercial Executivo</span><p>Wings System em produção, integrações oficiais da Meta e do Google, agentes de IA com travas e o método com revisão independente e segunda opinião. Projetos independentes para clientes: Lion Eletroposto (OCPP) e Mário Gás.</p></div></li>
+        <li><span class="when">2025 – 2026</span><div><span class="fase fase-trans">Fase 2 · Transição</span><h3>Diretor Comercial</h3><span class="org">MedBox Distribuidora de Medicamentos e Produtos Hospitalares</span><p>Primeiros sistemas agênticos: ERP comercial em Apps Script com publicação automatizada, inteligência de compras em Python e o MedBox Licitações Online, em GitHub Pages e Supabase.</p></div></li>
+        <li><span class="when">2025</span><div><span class="fase fase-trans">Fase 2 · Transição</span><h3>Diretor Executivo</h3><span class="org">Rede Apaixonados por Quatro Patas</span><p>Reestruturação comercial baseada em dados, com dashboards em tempo real.</p></div></li>
+        <li><span class="when">2023 – 2024</span><div><span class="fase fase-com">Fase 1 · Comercial</span><h3>Gerente Comercial</h3><span class="org">Alfavet Distribuidora</span><p>Automação das rotinas comerciais e dos indicadores de vendas.</p></div></li>
+        <li><span class="when">2022</span><div><span class="fase fase-com">Fase 1 · Comercial</span><h3>Consultor Empresarial</h3><span class="org">Pet Nobre Distribuidora</span><p>Reestruturação comercial e implantação de CRM.</p></div></li>
+        <li><span class="when">2008 – 2022</span><div><span class="fase fase-com">Fase 1 · Comercial</span><h3>Gerente Comercial</h3><span class="org">Seropec Distribuidora</span><p>Liderança de equipes de vendas, com faturamento de R$&nbsp;18&nbsp;milhões por mês.</p></div></li>
+      </ol>
+      <div class="edu">
+        <div><b>Pós-graduação em Engenharia de Software</b><span>Anhanguera · previsão 10/2027</span></div>
+        <div><b>Pós-graduação em Gestão Comercial e Vendas</b><span>Anhanguera · previsão 05/2027</span></div>
+        <div><b>Marketing Digital</b><span>UNOPAR · previsão 12/2026</span></div>
+        <div><b>Gestão Comercial</b><span>Estácio de Sá · concluído em 01/2021</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contato">
+    <div class="wrap">
+      <div class="contact">
+        <div>
+          <span class="label">Contato</span>
+          <h2>Vamos conversar sobre o seu próximo sistema.</h2>
+          <p>Rio de Janeiro · CLT ou PJ · disponível para mudança de cidade · português nativo, inglês básico.</p>
+        </div>
+        <div class="contact-card">
+          <div class="contact-row">
+            <span class="val" id="mail-b">efsosud@hotmail.com</span>
+            <button class="btn small" type="button" data-copy="efsosud@hotmail.com" data-target="mail-b">Copiar</button>
+          </div>
+          <a class="btn primary" href="https://www.linkedin.com/in/eric-oliveira-0602b396/" target="_blank" rel="noopener">Perfil no LinkedIn</a>
+          <a class="btn" href="https://github.com/efsosud-rgb" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="wrap">
+  <footer>
+    <span>Eric Fabiano da Silva Oliveira</span>
+    <span>Tela real com dados borrados e reproduções com dados fictícios. O código dos sistemas fica em repositórios privados.</span>
+  </footer>
+</div>
+
+<script>
+document.querySelectorAll('[data-copy]').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var text = btn.getAttribute('data-copy');
+    var done = function () {
+      var old = btn.textContent;
+      btn.textContent = 'Copiado';
+      setTimeout(function () { btn.textContent = old; }, 1600);
+    };
+    var selectFallback = function () {
+      var el = document.getElementById(btn.getAttribute('data-target'));
+      if (!el) return;
+      var r = document.createRange(); r.selectNodeContents(el);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      btn.textContent = 'Selecionado';
+      setTimeout(function () { btn.textContent = 'Copiar'; }, 1600);
+    };
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, selectFallback);
+      } else { selectFallback(); }
+    } catch (e) { selectFallback(); }
+  });
+});
+</script>
+</body>
+</html>
