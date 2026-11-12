@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Eric Oliveira · Desenvolvedor Full Stack</title>
-<meta name="description" content="Portfólio de Eric Oliveira: decisões de arquitetura, método e sistemas construídos com agentes de IA, como o Wings System, ERP/CRM multi-tenant em produção.">
+<meta name="description" content="Portfólio de Eric Oliveira: decisões de arquitetura, método e sistemas construídos com agentes de IA, como o Wings System, ERP/CRM multi-tenant em produção, e os sistemas de loja Moleka PDV e TF Pipas, em uso.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://efsosud-rgb.github.io/">
 <meta property="og:title" content="Eric Oliveira · Desenvolvedor Full Stack">
@@ -21,7 +21,8 @@
 <style>
 /* Layout: dossiê de projetos. Cada projeto é uma ficha técnica com campos fixos
    (problema, o que faz, meu papel, ferramentas) e um diagrama do mecanismo real.
-   As telas da seção "Telas" são reproduções em HTML com dados fictícios. */
+   As telas da seção "Telas" são reproduções em HTML com dados fictícios, menos a do Wings System
+   (real, borrada) e as do Moleka PDV e do TF Pipas (reais, numa loja de demonstração com dados fictícios). */
 :root {
   --bg: #F4F5F6;
   --surface: #FFFFFF;
@@ -711,6 +712,52 @@ footer { padding-block: 28px 44px; color: var(--muted); font-size: 14px; display
         </figure>
       </article>
 
+      <article class="feature" id="moleka-pdv">
+        <div>
+          <div class="p-head">
+            <span class="label">Sorveteria Moleka · 2026</span>
+            <h3>Moleka PDV, a frente de loja da sorveteria</h3>
+            <div class="tags"><span class="chip acc">Em uso na loja</span><span class="chip">Sistemas</span><span class="chip">PDV</span></div>
+          </div>
+          <dl class="spec">
+            <dt>Problema</dt><dd>A sorveteria precisava de um sistema próprio de frente de loja, com cupom na impressora e instalação de um clique no computador da loja.</dd>
+            <dt>O que faz</dt><dd>Caixa com várias formas de pagamento na mesma venda e troco; produtos com preço por tabela, por quantidade e por forma de pagamento; estoque; entrada da nota fiscal de compra pelo XML, que refaz o custo; financeiro com fluxo de caixa, DRE e rentabilidade; relatórios em Excel; cupom na impressora térmica. A capa traz a mascote da marca, animada.</dd>
+            <dt>Como é feito</dt><dd>Servidor local em Python (FastAPI, SQLAlchemy e SQLite) e interface numa janela própria do Windows (pywebview e WebView2), com instalador de um clique.</dd>
+            <dt>Meu papel</dt><dd>Requisitos com o dono da loja, arquitetura, direção da construção com Claude Code e validação de cada versão.</dd>
+            <dt>Qualidade</dt><dd>238 testes automatizados. A cada versão, o GitHub Actions monta o instalador e o testa num Windows de verdade antes de publicar.</dd>
+            <dt>Situação</dt><dd>Em uso na loja. Próximo passo: emissão de NFC-e.</dd>
+          </dl>
+        </div>
+        <figure class="shot" style="margin:0">
+          <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span class="url">moleka-pdv / capa · tela real, dados fictícios</span></div>
+          <img class="real" src="imagens/moleka-pdv-capa.jpg" alt="Capa do Moleka PDV com a mascote da sorveteria e a entrada do operador" width="1600" height="899" loading="lazy">
+          <figcaption><b>A capa.</b> Entrada do operador com a arte da marca, numa loja de demonstração com dados fictícios.</figcaption>
+        </figure>
+      </article>
+
+      <article class="feature" id="tf-pipas">
+        <div>
+          <div class="p-head">
+            <span class="label">TF Pipas · 2026</span>
+            <h3>TF Pipas, a gestão da loja de pipas</h3>
+            <div class="tags"><span class="chip acc">Em uso na loja</span><span class="chip">Sistemas</span><span class="chip">Sem internet</span></div>
+          </div>
+          <dl class="spec">
+            <dt>Problema</dt><dd>A loja precisava de um sistema que rodasse no próprio computador, sem depender de internet, do caixa ao financeiro.</dd>
+            <dt>O que faz</dt><dd>Frente de caixa com várias formas de pagamento na mesma venda, desconto e preço de atacado; produtos e estoque com aviso de reposição; sugestão e registro da produção das pipas; controle de caixa; usuários com permissões; contas a pagar e a receber, fluxo de caixa dia a dia e DRE com lucro líquido; relatórios de rentabilidade, curva ABC e vendas por vendedor. A capa anima a pipa e o mar sobre a foto da praia.</dd>
+            <dt>Como é feito</dt><dd>Servidor local em TypeScript (Bun e SQLite) e interface em React 19, Vite e Tailwind, num único executável que abre como aplicativo; capa em WebGL; instalador para Windows e cópia de segurança automática todo dia.</dd>
+            <dt>Meu papel</dt><dd>Requisitos com a loja, arquitetura, direção da construção com Claude Code e validação.</dd>
+            <dt>Qualidade</dt><dd>95 testes automatizados do servidor e testes de ponta a ponta pela interface, num Chrome sem janela.</dd>
+            <dt>Situação</dt><dd>Em uso na loja.</dd>
+          </dl>
+        </div>
+        <figure class="shot" style="margin:0">
+          <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span class="url">tf-pipas / capa · tela real, dados fictícios</span></div>
+          <img class="real" src="imagens/tf-pipas-capa.jpg" alt="Capa do TF Pipas: foto da praia com a pipa da marca e a entrada dos usuários" width="1600" height="1000" loading="lazy">
+          <figcaption><b>A capa.</b> A pipa e o mar se mexem com o vento e com o cursor. Usuários de demonstração, com dados fictícios.</figcaption>
+        </figure>
+      </article>
+
       <div class="grid">
         <article class="card">
           <span class="label">Wings Company · 2026</span>
@@ -758,9 +805,9 @@ footer { padding-block: 28px 44px; color: var(--muted); font-size: 14px; display
       <div class="sec-head">
         <span class="label">Telas</span>
         <h2>Por dentro dos sistemas</h2>
-        <p>A primeira tela é real, com os dados de clientes borrados. As demais são reproduções fiéis das telas em uso, refeitas em HTML para este portfólio com nomes, valores e conversas fictícios.</p>
+        <p>A primeira tela é real, com os dados de clientes borrados. As do Moleka PDV e do TF Pipas também são reais, numa loja de demonstração com dados fictícios. As demais são reproduções fiéis das telas em uso, refeitas em HTML para este portfólio com nomes, valores e conversas fictícios.</p>
       </div>
-      <div class="notice"><span aria-hidden="true">●</span><span><b>Dados protegidos.</b> Nenhum dado real de cliente aparece aqui: na tela real ele está borrado, e nas reproduções foi inventado.</span></div>
+      <div class="notice"><span aria-hidden="true">●</span><span><b>Dados protegidos.</b> Nenhum dado real de cliente aparece aqui: na tela real do Wings System ele está borrado; nas telas do Moleka PDV e do TF Pipas e nas reproduções, foi inventado.</span></div>
 
       <div class="shots">
         <figure class="shot wide" style="margin:0">
@@ -1055,6 +1102,30 @@ Comercial/
           <figcaption><b>MedBox · Painel de Lances.</b> Cruza o edital com a base de preços e o relatório da plataforma de cotações, item a item, com margem e alerta de item sem viabilidade.</figcaption>
         </figure>
 
+        <figure class="shot" style="margin:0">
+          <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span class="url">moleka-pdv / caixa · tela real, dados fictícios</span></div>
+          <img class="real" src="imagens/moleka-pdv-caixa.jpg" alt="Caixa do Moleka PDV com uma venda de quatro itens" width="1600" height="899" loading="lazy">
+          <figcaption><b>Moleka PDV · Caixa.</b> Leitor ou busca, atalhos de F2 a F12 e várias formas de pagamento na mesma venda.</figcaption>
+        </figure>
+
+        <figure class="shot" style="margin:0">
+          <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span class="url">moleka-pdv / financeiro · tela real, dados fictícios</span></div>
+          <img class="real" src="imagens/moleka-pdv-financeiro.jpg" alt="Financeiro do Moleka PDV com contas a pagar e a receber" width="1600" height="899" loading="lazy">
+          <figcaption><b>Moleka PDV · Financeiro.</b> Contas a pagar e a receber, fluxo de caixa, DRE e rentabilidade.</figcaption>
+        </figure>
+
+        <figure class="shot" style="margin:0">
+          <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span class="url">tf-pipas / frente de caixa · tela real, dados fictícios</span></div>
+          <img class="real" src="imagens/tf-pipas-pdv.jpg" alt="Frente de caixa do TF Pipas com quatro itens no carrinho" width="1600" height="1000" loading="lazy">
+          <figcaption><b>TF Pipas · Frente de caixa.</b> Venda com aviso do preço de atacado e o total vendido no dia.</figcaption>
+        </figure>
+
+        <figure class="shot" style="margin:0">
+          <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span class="url">tf-pipas / produção · tela real, dados fictícios</span></div>
+          <img class="real" src="imagens/tf-pipas-producao.jpg" alt="Tela de produção do TF Pipas com a sugestão do que produzir" width="1600" height="1000" loading="lazy">
+          <figcaption><b>TF Pipas · Produção.</b> Sugere o que produzir e o que comprar pelo ritmo de venda e pelo estoque de cada produto.</figcaption>
+        </figure>
+
       </div>
     </div>
   </section>
@@ -1069,9 +1140,9 @@ Comercial/
       <div class="stack">
         <div class="sg">
           <h3>Linguagens e base técnica</h3>
-          <p>O Wings System é um monorepo TypeScript com API, web, worker e landing pages, publicado por Docker no Coolify.</p>
+          <p>O Wings System é um monorepo TypeScript com API, web, worker e landing pages, publicado por Docker no Coolify. O Moleka PDV e o TF Pipas rodam no computador da loja, com servidor local em Python e em TypeScript (Bun).</p>
           <div class="cloud">
-            <span class="hi">TypeScript / Node.js</span><span class="hi">React</span><span class="hi">Vite</span><span class="hi">PostgreSQL 17</span><span class="hi">SQL</span><span class="hi">HTML / CSS</span><span class="hi">Python</span><span class="hi">Bash / PowerShell</span><span class="hi">Google Apps Script</span><span>JavaScript (p5.js, Three.js, GSAP)</span><span>Java</span><span>pnpm monorepo</span><span>migrações e seeds idempotentes</span><span>testes unitários e e2e (Playwright)</span><span>CI no GitHub Actions</span><span>Docker</span><span>Coolify</span><span>nginx / Traefik</span><span>Let's Encrypt</span><span>Cloudflare R2 + Turnstile</span><span>DNS Hostinger / HostGator</span><span>WordPress / Elementor</span><span>React Native / Expo</span>
+            <span class="hi">TypeScript / Node.js</span><span class="hi">React</span><span class="hi">Vite</span><span class="hi">PostgreSQL 17</span><span class="hi">SQL</span><span class="hi">HTML / CSS</span><span class="hi">Python</span><span class="hi">FastAPI</span><span class="hi">SQLite</span><span>Bun</span><span>pywebview</span><span class="hi">Bash / PowerShell</span><span class="hi">Google Apps Script</span><span>JavaScript (p5.js, Three.js, GSAP)</span><span>Java</span><span>pnpm monorepo</span><span>migrações e seeds idempotentes</span><span>testes unitários e e2e (Playwright)</span><span>CI no GitHub Actions</span><span>Docker</span><span>Coolify</span><span>nginx / Traefik</span><span>Let's Encrypt</span><span>Cloudflare R2 + Turnstile</span><span>DNS Hostinger / HostGator</span><span>WordPress / Elementor</span><span>React Native / Expo</span>
           </div>
         </div>
         <div class="sg">
