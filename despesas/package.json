@@ -1,0 +1,11 @@
+{
+  "name": "controle-despesas",
+  "private": true,
+  "type": "module",
+  "description": "App de controle de despesas pessoais (PWA, dados só no aparelho).",
+  "scripts": {
+    "test": "node --test \"testes/*.test.js\"",
+    "sw": "node ferramentas/atualizar-sw.mjs",
+    "sw:conferir": "node ferramentas/atualizar-sw.mjs --conferir"
+  }
+}
