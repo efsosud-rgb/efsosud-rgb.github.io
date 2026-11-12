@@ -50,7 +50,8 @@ const ARQUIVOS = [
 const CACHE = `controle-despesas-${VERSAO}`;
 
 self.addEventListener('install', (evento) => {
-  evento.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(ARQUIVOS)));
+  /* cache: 'reload' busca direto no servidor, sem pegar cópia antiga guardada pelo navegador. */
+  evento.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(ARQUIVOS.map((url) => new Request(url, { cache: 'reload' })))));
 });
 
 self.addEventListener('activate', (evento) => {
