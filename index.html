@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Eric Oliveira · Desenvolvedor Full Stack</title>
-<meta name="description" content="Portfólio de Eric Oliveira: decisões de arquitetura, método e sistemas construídos com agentes de IA, como o Wings System, ERP/CRM multi-tenant em produção, e os sistemas de loja Moleka PDV e TF Pipas, em uso.">
+<meta name="description" content="Portfólio de Eric Oliveira: decisões de arquitetura, método e sistemas construídos com agentes de IA, como o Wings System, ERP/CRM multi-tenant em produção, os sistemas de loja Moleka PDV e TF Pipas, em uso, e projetos para Mário Gás, Amarjon Biojoias, Lion Eletroposto e Still Fit.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://efsosud-rgb.github.io/">
 <meta property="og:title" content="Eric Oliveira · Desenvolvedor Full Stack">
@@ -391,6 +391,16 @@ footer { padding-block: 28px 44px; color: var(--muted); font-size: 14px; display
 .fase-trans { background: var(--trans-bg); color: var(--trans-fg); }
 .fase-com { background: var(--com-bg); color: var(--com-fg); }
 .edu { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+/* Projetos para clientes: fichas do Controle de Despesas e da Still Fit e os três sistemas sem tela (18/11/2026) */
+.shot .canvas { padding: 18px 14px 8px; background: radial-gradient(120% 90% at 50% 0%, var(--surface-2), var(--surface)); }
+.shot .canvas img { display: block; width: 100%; height: auto; }
+.spec dd a { color: var(--accent-text); font-weight: 700; text-underline-offset: 3px; }
+.sub-head { display: flex; flex-direction: column; gap: 10px; margin: 20px 0 22px; padding-top: 36px; border-top: 1px solid var(--line); }
+.sub-head > * { max-width: 720px; }
+.sub-head h3 { font-size: clamp(22px, 2.6vw, 28px); font-weight: 800; letter-spacing: -.015em; }
+.sub-head p { color: var(--muted); }
+.card .pic { display: block; width: 100%; height: auto; aspect-ratio: 996 / 696; border-radius: 12px; background: var(--surface-2); }
+.grid.cli { margin-top: 0; }
 @media (max-width: 960px) {
   .adrs { grid-template-columns: 1fr; }
   .fluxo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -758,6 +768,86 @@ footer { padding-block: 28px 44px; color: var(--muted); font-size: 14px; display
         </figure>
       </article>
 
+      <article class="feature" id="controle-despesas">
+        <div>
+          <div class="p-head">
+            <span class="label">App mobile · PWA · 2026</span>
+            <h3>Controle de Despesas, a conta da família no celular</h3>
+            <div class="tags"><span class="chip acc">Instalável</span><span class="chip">PWA</span><span class="chip">Sem internet</span></div>
+          </div>
+          <dl class="spec">
+            <dt>O que faz</dt><dd>Despesas únicas, futuras e recorrentes (semanal, mensal, anual ou parcelada), a renda de cada pessoa da família, o que está pago, o que atrasou e o saldo previsto do mês. Instala na tela inicial do celular e funciona sem internet.</dd>
+            <dt>Como é feito</dt><dd>PWA sem etapa de build: Preact e htm, service worker e manifest. Dinheiro em centavos inteiros, datas sem fuso e recorrência calculada na hora. A logomarca do app é em 3D.</dd>
+            <dt>Dados</dt><dd>Sem login: ficam só no aparelho, num formato versionado no localStorage, com backup e restauração por arquivo.</dd>
+            <dt>Meu papel</dt><dd>Requisitos e decisões de produto (instalável, sem login, dados só no aparelho), direção da construção com IA e validação.</dd>
+            <dt>Qualidade</dt><dd>47 testes automatizados. Cada envio à branch principal roda os testes e publica no GitHub Pages.</dd>
+            <dt>Situação</dt><dd>Publicado no GitHub Pages. <a href="https://efsosud-rgb.github.io/controle-despesas/">Abrir o app</a> e, no celular, escolher "Instalar app".</dd>
+          </dl>
+        </div>
+        <figure class="shot" style="margin:0">
+          <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span class="url">controle-despesas · telas reais, dados fictícios</span></div>
+          <div class="canvas"><img src="imagens/controle-despesas-telas.webp" alt="Três celulares com o Controle de Despesas: boas-vindas, saldo previsto do mês e lista de despesas" width="1600" height="892" loading="lazy"></div>
+          <figcaption><b>No celular.</b> Boas-vindas, saldo previsto do mês e despesas atrasadas, a vencer e pagas. Dados fictícios.</figcaption>
+        </figure>
+      </article>
+
+      <article class="feature" id="still-fit">
+        <div>
+          <div class="p-head">
+            <span class="label">Still Fit · cliente da Wings · 2026</span>
+            <h3>Still Fit, a academia em maquete 3D e CGI</h3>
+            <div class="tags"><span class="chip">3D</span><span class="chip">CGI</span></div>
+          </div>
+          <dl class="spec">
+            <dt>Para quê</dt><dd>Formatação de franquia da Still Fit, academia de Xerém: mostrar a unidade em 3D, por dentro e por fora.</dd>
+            <dt>Maquete</dt><dd>Maquete 3D interativa em Three.js, reconstruída a partir de fotos e vídeos, com medidas estimadas: modo maquete com teto removível, visita virtual em primeira pessoa, dia e noite e exportação em .glb.</dd>
+            <dt>CGI</dt><dd>O interior do salão (38 × 24 m, estimado a partir de vídeos) foi modelado inteiro por código em Python no Blender, sem modelagem manual, e renderizado com Cycles em 20 jobs paralelos no GitHub Actions. O FFmpeg monta fachada, interior e cartela.</dd>
+            <dt>Meu papel</dt><dd>Direção da modelagem e do render com IA, a partir das fotos e dos vídeos da academia, e validação.</dd>
+          </dl>
+        </div>
+        <figure class="shot" style="margin:0">
+          <div class="bar" aria-hidden="true"><i></i><i></i><i></i><span class="url">still-fit / cgi · quadro do render, sem retoque</span></div>
+          <img class="real" src="imagens/still-fit-cgi.jpg" alt="Interior da academia Still Fit em CGI: esteiras, estações de musculação e iluminação de sanca" width="1280" height="720" loading="lazy">
+          <figcaption><b>O salão em CGI.</b> Quadro final do render Cycles (1280 × 720), sem retoque.</figcaption>
+        </figure>
+      </article>
+
+      <div class="sub-head" id="clientes">
+        <span class="label">Projetos para clientes · 2026</span>
+        <h3>Mais três sistemas, concluídos e em operação</h3>
+        <p>Entram aqui sem telas: fica o que cada um faz e com o que foi construído. As ilustrações são modelos 3D feitos para este portfólio, não telas dos sistemas.</p>
+      </div>
+      <div class="grid cli">
+        <article class="card" id="mario-gas">
+          <img class="pic" src="imagens/mario-gas-3d.webp" alt="Ilustração 3D: botijão de gás, balão de conversa e fichas" width="996" height="696" loading="lazy">
+          <span class="label">Mário Gás Distribuidora · 2026</span>
+          <h3>ERP de gestão com CRM e chatbot de IA</h3>
+          <p>Gestão da distribuidora num só sistema, com CRM integrado e chatbot de atendimento por IA. TypeScript de ponta a ponta: interface em React, API em Fastify e banco PostgreSQL. O chatbot usa um LLM via OpenRouter.</p>
+          <div class="dims" aria-label="Tecnologias"><span>TypeScript</span><span>React</span><span>Fastify</span><span>PostgreSQL</span><span>OpenRouter</span></div>
+          <p class="role-line"><b>Situação</b>concluído e em operação</p>
+        </article>
+        <article class="card" id="amarjon-biojoias">
+          <img class="pic" src="imagens/amarjon-biojoias-3d.webp" alt="Ilustração 3D: painel com gráficos e colar de contas" width="996" height="696" loading="lazy">
+          <span class="label">Amarjon Biojoias · 2026</span>
+          <h3>Dashboards integrados de gestão de dados</h3>
+          <p>PostgreSQL com modelagem dimensional, em fatos e dimensões, e painéis em React.</p>
+          <div class="dims" aria-label="Tecnologias"><span>PostgreSQL</span><span>Modelagem dimensional</span><span>React</span></div>
+          <p class="role-line"><b>Situação</b>concluído e em operação</p>
+        </article>
+        <article class="card" id="lion-eletroposto">
+          <img class="pic" src="imagens/lion-eletroposto-3d.webp" alt="Ilustração 3D: dois carregadores de veículos elétricos" width="996" height="696" loading="lazy">
+          <span class="label">Lion Eletroposto · 2026</span>
+          <h3>Sistema de gestão dos eletropostos</h3>
+          <p>Servidor OCPP em Node.js e TypeScript, que fala com os carregadores por WebSocket; PostgreSQL e Docker; painel de gestão dos pontos de recarga em React.</p>
+          <div class="dims" aria-label="Tecnologias"><span>OCPP</span><span>Node.js</span><span>TypeScript</span><span>WebSocket</span><span>PostgreSQL</span><span>Docker</span><span>React</span></div>
+          <p class="role-line"><b>Situação</b>concluído e em operação</p>
+        </article>
+      </div>
+
+      <div class="sub-head">
+        <span class="label">Wings Company e MedBox</span>
+        <h3>Outras entregas</h3>
+      </div>
       <div class="grid">
         <article class="card">
           <span class="label">Wings Company · 2026</span>
@@ -1142,7 +1232,7 @@ Comercial/
           <h3>Linguagens e base técnica</h3>
           <p>O Wings System é um monorepo TypeScript com API, web, worker e landing pages, publicado por Docker no Coolify. O Moleka PDV e o TF Pipas rodam no computador da loja, com servidor local em Python e em TypeScript (Bun).</p>
           <div class="cloud">
-            <span class="hi">TypeScript / Node.js</span><span class="hi">React</span><span class="hi">Vite</span><span class="hi">PostgreSQL 17</span><span class="hi">SQL</span><span class="hi">HTML / CSS</span><span class="hi">Python</span><span class="hi">FastAPI</span><span class="hi">SQLite</span><span>Bun</span><span>pywebview</span><span class="hi">Bash / PowerShell</span><span class="hi">Google Apps Script</span><span>JavaScript (p5.js, Three.js, GSAP)</span><span>Java</span><span>pnpm monorepo</span><span>migrações e seeds idempotentes</span><span>testes unitários e e2e (Playwright)</span><span>CI no GitHub Actions</span><span>Docker</span><span>Coolify</span><span>nginx / Traefik</span><span>Let's Encrypt</span><span>Cloudflare R2 + Turnstile</span><span>DNS Hostinger / HostGator</span><span>WordPress / Elementor</span><span>React Native / Expo</span>
+            <span class="hi">TypeScript / Node.js</span><span class="hi">React</span><span class="hi">Vite</span><span class="hi">PostgreSQL 17</span><span class="hi">SQL</span><span class="hi">HTML / CSS</span><span class="hi">Python</span><span class="hi">FastAPI</span><span class="hi">SQLite</span><span>Bun</span><span>pywebview</span><span>Preact / htm (PWA)</span><span>Blender (bpy) + Cycles</span><span class="hi">Bash / PowerShell</span><span class="hi">Google Apps Script</span><span>JavaScript (p5.js, Three.js, GSAP)</span><span>Java</span><span>pnpm monorepo</span><span>migrações e seeds idempotentes</span><span>testes unitários e e2e (Playwright)</span><span>CI no GitHub Actions</span><span>Docker</span><span>Coolify</span><span>nginx / Traefik</span><span>Let's Encrypt</span><span>Cloudflare R2 + Turnstile</span><span>DNS Hostinger / HostGator</span><span>WordPress / Elementor</span><span>React Native / Expo</span>
           </div>
         </div>
         <div class="sg">
@@ -1259,7 +1349,7 @@ Comercial/
         <p>A transição começou em 2025: da direção da Apaixonados por Quatro Patas fui para a MedBox, onde comecei a desenvolver sistemas agênticos. Hoje sou o desenvolvedor full stack sênior da Wings.</p>
       </div>
       <ol class="timeline">
-        <li class="now"><span class="when">2026 – atual</span><div><span class="fase fase-dev">Fase 3 · Desenvolvimento</span><h3>Desenvolvedor Full Stack Sênior e Arquiteto de IA</h3><span class="org">Wings Company (franquias) · também Diretor Comercial Executivo</span><p>Wings System em produção, integrações oficiais da Meta e do Google, agentes de IA com travas e o método com revisão independente e segunda opinião. Projetos independentes para clientes: Lion Eletroposto (OCPP) e Mário Gás.</p></div></li>
+        <li class="now"><span class="when">2026 – atual</span><div><span class="fase fase-dev">Fase 3 · Desenvolvimento</span><h3>Desenvolvedor Full Stack Sênior e Arquiteto de IA</h3><span class="org">Wings Company (franquias) · também Diretor Comercial Executivo</span><p>Wings System em produção, integrações oficiais da Meta e do Google, agentes de IA com travas e o método com revisão independente e segunda opinião. Projetos para clientes: Moleka PDV, TF Pipas, Mário Gás, Amarjon Biojoias, Lion Eletroposto (OCPP) e a maquete 3D e o CGI da Still Fit.</p></div></li>
         <li><span class="when">2025 – 2026</span><div><span class="fase fase-trans">Fase 2 · Transição</span><h3>Diretor Comercial</h3><span class="org">MedBox Distribuidora de Medicamentos e Produtos Hospitalares</span><p>Primeiros sistemas agênticos: ERP comercial em Apps Script com publicação automatizada, inteligência de compras em Python e o MedBox Licitações Online, em GitHub Pages e Supabase.</p></div></li>
         <li><span class="when">2025</span><div><span class="fase fase-trans">Fase 2 · Transição</span><h3>Diretor Executivo</h3><span class="org">Rede Apaixonados por Quatro Patas</span><p>Reestruturação comercial baseada em dados, com dashboards em tempo real.</p></div></li>
         <li><span class="when">2023 – 2024</span><div><span class="fase fase-com">Fase 1 · Comercial</span><h3>Gerente Comercial</h3><span class="org">Alfavet Distribuidora</span><p>Automação das rotinas comerciais e dos indicadores de vendas.</p></div></li>
